@@ -1,0 +1,7 @@
+# Excluir todos los archivos y directorios por defecto
+*
+
+# Pero incluir estos archivos específicos
+!Libro.py
+!gestion_libros.py
+!README.md
