@@ -6,6 +6,9 @@ Una biblioteca está interesada en automatizar la gestión de préstamos. Según
 
 Codificar un programa en **PYTHON** para automatizar la gestión de préstamos en la biblioteca.
 
+![Modelo Conceptual](ModeloConceptual_DB_biblioteca_UNIDO_page-0001.jpg)
+
+
 ## Grupo 1: Laura – Lucas - Mariela
 ### Diseñar el procesamiento de los PRÉSTAMOS:
 - Diseñar las **Altas de Préstamos** con los siguientes atributos: ID (código único), fecha de préstamo, fecha de devolución, y estado (por ejemplo: activo, devuelto, vencido).
