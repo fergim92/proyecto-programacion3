@@ -1,8 +1,5 @@
 # proyecto-programacion3
 
-Aquí te dejo tu texto en formato Markdown:
-
-```markdown
 # Gestión de Biblioteca
 
 Una biblioteca está interesada en automatizar la gestión de préstamos. Según el enunciado del problema de la sesión COIL 2 y siguiendo la distribución de las preguntas para cada uno de los estudiantes (o grupos), se pide:
@@ -89,6 +86,4 @@ Una "categoría" representa una clasificación o etiqueta que se asigna a los li
 
 Asuma todo lo que crea conveniente; puede agregar otros atributos en las entidades de ser necesario.
 
-```
 
-Espero que te sirva.
