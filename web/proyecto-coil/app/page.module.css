@@ -1,0 +1,12 @@
+.main {
+  margin-top: 0px;
+  background-color: #cccccc;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  @media (min-width: 900px) {
+    background-image: url("../public/background.jpg");
+  }
+  @media (max-width: 900px) {
+    background-image: url("../public/background-mobile.jpg");
+  }
+}
