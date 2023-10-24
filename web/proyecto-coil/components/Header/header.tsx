@@ -2,7 +2,7 @@
 import { Box, Button, Typography } from "@mui/material";
 import styles from "./header.module.css";
 import Image from "next/image";
-import COIL_logo_dark from "../../public/COIL-logo-dark.png";
+import COIL_logo_light from "../../public/COIL-logo-light.png";
 import Link from "next/link";
 import DrawerButton from "./drawer";
 
@@ -19,7 +19,7 @@ const Header = () => {
             margin: 0,
           }}
         >
-          <Image className={styles.logo} src={COIL_logo_dark} alt="Logo" />
+          <Image className={styles.logo} src={COIL_logo_light} alt="Logo" />
         </Link>
         <Box
           sx={{
@@ -51,31 +51,45 @@ const Header = () => {
           <Link href="/" style={{ textDecoration: "none" }}>
             <Typography
               sx={{
-                color: "black",
+                color: "white",
                 padding: "5px 20px",
                 textDecoration: "none",
                 transition: ".3s",
                 "&&:hover": {
-                  transform: "scale(1.1)",
-                  transition: ".3s",
+                  color: "rgba(125, 250, 125, 1)",
                 },
               }}
             >
-              Home
+              Inicio
+            </Typography>
+          </Link>
+          <Link href="/books" style={{ textDecoration: "none" }}>
+            <Typography
+              sx={{
+                color: "white",
+                padding: "5px 20px",
+                textDecoration: "none",
+                transition: ".3s",
+                "&&:hover": {
+                  color: "rgba(125, 250, 125, 1)",
+                },
+              }}
+            >
+              Libros
             </Typography>
           </Link>
           <Link href="/register">
             <Button
               variant="outlined"
               sx={{
-                color: "black",
+                color: "white",
                 borderRadius: "30px",
-                borderColor: "black",
+                borderColor: "white",
                 transition: ".3s",
                 "&&:hover": {
                   backgroundColor: "rgba(0,0,0,0.3)",
-                  color: "white",
-                  borderColor: "white",
+                  color: "rgba(125, 250, 125, 1)",
+                  borderColor: "rgba(125, 250, 125, 1)",
                 },
               }}
             >
@@ -86,14 +100,14 @@ const Header = () => {
             <Button
               variant="outlined"
               sx={{
-                color: "black",
+                color: "white",
                 borderRadius: "30px",
-                borderColor: "black",
+                borderColor: "white",
                 transition: ".3s",
                 "&&:hover": {
                   backgroundColor: "rgba(0,0,0,0.3)",
-                  color: "white",
-                  borderColor: "white",
+                  color: "rgba(125, 250, 125, 1)",
+                  borderColor: "rgba(125, 250, 125, 1)",
                 },
               }}
             >

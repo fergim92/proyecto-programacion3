@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <footer
       style={{
-        backgroundColor: "#a8a8b0",
+        backgroundColor: "#191919",
         width: "100%",
       }}
     >
@@ -13,6 +13,9 @@ const Footer = () => {
         color="text.secondary"
         align="center"
         padding={3}
+        sx={{
+          color: "white",
+        }}
       >
         @2023 - Todos los derechos reservados PUCP-UNRN
       </Typography>

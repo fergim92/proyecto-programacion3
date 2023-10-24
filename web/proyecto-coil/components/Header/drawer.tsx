@@ -56,7 +56,7 @@ export default function TemporaryDrawer() {
             },
           }}
         >
-          Home
+          Inicio
         </Typography>
       </Link>
       <Link href="/register">
@@ -101,7 +101,7 @@ export default function TemporaryDrawer() {
   return (
     <>
       <Button onClick={toggleDrawer("right", true)}>
-        <MenuIcon sx={{ fontSize: "2rem", color: "black" }} />
+        <MenuIcon sx={{ fontSize: "2rem", color: "white" }} />
       </Button>
       <Drawer
         anchor="right"
