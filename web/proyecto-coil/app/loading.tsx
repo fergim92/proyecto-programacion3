@@ -1,9 +1,9 @@
-import { CircularProgress } from "@mui/material";
+import Loader from "@/components/Loader/loader";
 
 export default function Loading() {
   return (
     <main>
-      <CircularProgress sx={{ color: "#191919" }} />
+      <Loader />
     </main>
   );
 }

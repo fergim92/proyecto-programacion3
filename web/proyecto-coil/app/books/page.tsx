@@ -1,7 +1,6 @@
 "use client";
 import {
   Card,
-  CardActionArea,
   CardMedia,
   CardContent,
   Typography,
@@ -11,7 +10,8 @@ import {
   Link,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-import CircularProgress from "@mui/material/CircularProgress";
+import { useTheme } from "@mui/material/styles";
+import Loader from "@/components/Loader/loader";
 
 interface BookType {
   ISBN: string;
@@ -26,6 +26,7 @@ interface BookType {
 const Books = () => {
   const [data, setData] = useState<BookType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const theme = useTheme();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,7 +47,7 @@ const Books = () => {
   }, []);
 
   if (loading) {
-    return <CircularProgress sx={{ color: "#191919" }} />;
+    return <Loader />;
   }
 
   return (
@@ -77,38 +78,58 @@ const Books = () => {
             }}
             key={book.ISBN}
           >
-            <CardActionArea>
-              <CardMedia
-                component="img"
-                sx={{
-                  height: "100%",
-                  "@media (min-width: 900px)": {
-                    maxHeight: "280px",
-                  },
-                  "@media (max-width: 900px)": {
-                    maxHeight: "350px",
-                  },
-                }}
-                image={book.imagen_url}
-                title={book.titulo}
-                alt={book.titulo}
-              />
-              <CardContent>
-                <Typography gutterBottom component="div">
-                  {book.titulo}
-                </Typography>
-                <Typography
-                  gutterBottom
-                  component="div"
-                  sx={{ color: "grey", fontSize: "13px" }}
+            <CardMedia
+              component="img"
+              sx={{
+                height: "100%",
+                "@media (min-width: 900px)": {
+                  maxHeight: "280px",
+                },
+                "@media (max-width: 900px)": {
+                  maxHeight: "350px",
+                },
+              }}
+              image={book.imagen_url}
+              title={book.titulo}
+              alt={book.titulo}
+            />
+            <CardContent
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "start",
+                alignItems: "start",
+                width: "100%",
+                flex: 1,
+                backgroundColor: theme.palette.background.paper,
+              }}
+            >
+              <Typography gutterBottom component="div">
+                {book.titulo}
+              </Typography>
+              <Typography
+                gutterBottom
+                component="div"
+                sx={{ color: "grey", fontSize: "13px" }}
+              >
+                {book.anio_de_publicacion}
+              </Typography>
+            </CardContent>
+            <CardActions
+              sx={{
+                backgroundColor: theme.palette.background.paper,
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                padding: 0,
+              }}
+            >
+              <Link href={`/books/${book.ISBN}`} style={{ width: "100%" }}>
+                <Button
+                  size="medium"
+                  color="primary"
+                  sx={{ width: "100%", padding: "10px 0" }}
                 >
-                  {book.anio_de_publicacion}
-                </Typography>
-              </CardContent>
-            </CardActionArea>
-            <CardActions>
-              <Link href={`/books/${book.ISBN}`}>
-                <Button size="medium" color="primary">
                   Ver detalles
                 </Button>
               </Link>

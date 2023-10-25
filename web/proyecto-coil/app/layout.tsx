@@ -1,12 +1,10 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import Loading from "./loading";
 import Header from "@/components/Header/header";
 import Footer from "@/components/Footer/footer";
-
-const inter = Inter({ subsets: ["latin"] });
+import Theme from "./providers";
 
 export const metadata: Metadata = {
   title: "Proyecto COIL",
@@ -22,7 +20,6 @@ export default function RootLayout({
     <html lang="en">
       <Suspense fallback={<Loading />}>
         <body
-          className={inter.className}
           style={{
             minHeight: "100vh",
             display: "flex",
@@ -31,9 +28,11 @@ export default function RootLayout({
             alignItems: "center",
           }}
         >
-          <Header />
-          {children}
-          <Footer />
+          <Theme>
+            <Header />
+            {children}
+            <Footer />
+          </Theme>
         </body>
       </Suspense>
     </html>

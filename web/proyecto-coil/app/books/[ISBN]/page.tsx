@@ -4,23 +4,14 @@ import {
   Card,
   CardContent,
   CardMedia,
-  CircularProgress,
   Typography,
 } from "@mui/material";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import styles from "./page.module.css";
-
-interface BookType {
-  ISBN: string;
-  anio_de_publicacion: number;
-  cantidad_disponible: number;
-  id_editorial: number;
-  id_idioma: number;
-  imagen_url: string;
-  titulo: string;
-}
+import { useTheme } from "@mui/material/styles";
+import Loader from "@/components/Loader/loader";
 
 interface BookType {
   ISBN: string;
@@ -34,6 +25,7 @@ interface BookType {
 
 const BookDetail = () => {
   const pathname = usePathname();
+  const theme = useTheme();
   if (!pathname) return <Typography>No hay nada</Typography>;
   const parts = pathname.split("/");
   const isbnFromPathname = parts[parts.length - 1];
@@ -60,7 +52,7 @@ const BookDetail = () => {
     fetchData();
   }, []);
   if (loading) {
-    return <CircularProgress sx={{ color: "#191919" }} />;
+    return <Loader />;
   }
   return (
     <main style={{ height: "auto", display: "flex", flexDirection: "column" }}>
@@ -89,7 +81,7 @@ const BookDetail = () => {
             component="img"
             sx={{
               "@media (min-width: 900px)": {
-                maxHeight: "500px",
+                maxHeight: "60vh",
               },
               "@media (max-width: 900px)": {
                 maxHeight: "350px",
@@ -103,9 +95,13 @@ const BookDetail = () => {
             sx={{
               display: "flex",
               flexDirection: "column",
-              justifyContent: "start",
+              justifyContent: "center",
               width: "100%",
               gap: "5px",
+              backgroundColor: theme.palette.background.paper,
+              "@media (min-width: 900px)": {
+                minHeight: "60vh",
+              },
             }}
           >
             <Typography className={styles.book_info}>

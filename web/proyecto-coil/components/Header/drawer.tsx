@@ -7,10 +7,12 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { Typography } from "@mui/material";
 import Link from "next/link";
 import CloseIcon from "@mui/icons-material/Close";
+import { useTheme } from "@mui/material/styles";
 
 type Anchor = "top" | "left" | "bottom" | "right";
 
-const TemporaryDrawer = ({ pathname }: { pathname: string | null }) => {
+const TemporaryDrawer = () => {
+  const theme = useTheme();
   const [state, setState] = React.useState({
     right: false,
   });
@@ -33,12 +35,14 @@ const TemporaryDrawer = ({ pathname }: { pathname: string | null }) => {
     <Box
       sx={{
         width: 230,
-        marginTop: "50px",
+        paddingTop: "50px",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
+        justifyContent: "start",
         alignItems: "flex-start",
         gap: "10px",
+        backgroundColor: theme.palette.background.paper,
+        height: "100%",
       }}
       role="presentation"
       onKeyDown={toggleDrawer("right", false)}
@@ -50,6 +54,11 @@ const TemporaryDrawer = ({ pathname }: { pathname: string | null }) => {
           left: "15px",
           top: "15px",
           fontSize: "24px",
+          "&&:hover": {
+            color: theme.palette.primary.main,
+            textShadow:
+              "0 0 5px rgba(125, 225, 125, 0.5), 0 0 15px rgba(125, 250, 125, 1)",
+          },
         }}
       />
       <Link
@@ -59,13 +68,14 @@ const TemporaryDrawer = ({ pathname }: { pathname: string | null }) => {
       >
         <Typography
           sx={{
-            color: "black",
+            color: theme.palette.text.primary,
             padding: "5px 20px",
             textDecoration: "none",
-            transition: ".3s",
+            transition: ".2s",
             "&&:hover": {
-              transform: "scale(1.1)",
-              transition: ".3s",
+              color: theme.palette.primary.main,
+              textShadow:
+                "0 0 5px rgba(125, 225, 125, 0.5), 0 0 15px rgba(125, 250, 125, 1)",
             },
           }}
         >
@@ -79,31 +89,28 @@ const TemporaryDrawer = ({ pathname }: { pathname: string | null }) => {
       >
         <Typography
           sx={{
-            color: "black",
+            color: theme.palette.text.primary,
             padding: "5px 20px",
             textDecoration: "none",
-            transition: ".3s",
+            transition: ".2s",
             "&&:hover": {
-              transform: "scale(1.1)",
-              transition: ".3s",
+              color: theme.palette.primary.main,
+              textShadow:
+                "0 0 5px rgba(125, 225, 125, 0.5), 0 0 15px rgba(125, 250, 125, 1)",
             },
           }}
         >
-          Libros
+          Biblioteca
         </Typography>
       </Link>
       <Link href="/register" onClick={toggleDrawer("right", false)}>
         <Button
           variant="outlined"
           sx={{
-            color: "black",
-            borderRadius: "20px",
-            borderColor: "black",
-            transition: ".3s",
+            color: theme.palette.text.primary,
+            borderColor: theme.palette.text.primary,
             "&&:hover": {
-              backgroundColor: "rgba(0,0,0,0.3)",
-              color: "white",
-              borderColor: "white",
+              color: theme.palette.primary.main,
             },
           }}
         >
@@ -114,14 +121,10 @@ const TemporaryDrawer = ({ pathname }: { pathname: string | null }) => {
         <Button
           variant="outlined"
           sx={{
-            color: "black",
-            borderRadius: "20px",
-            borderColor: "black",
-            transition: ".3s",
+            color: theme.palette.text.primary,
+            borderColor: theme.palette.text.primary,
             "&&:hover": {
-              backgroundColor: "rgba(0,0,0,0.3)",
-              color: "white",
-              borderColor: "white",
+              color: theme.palette.primary.main,
             },
           }}
         >
@@ -135,7 +138,7 @@ const TemporaryDrawer = ({ pathname }: { pathname: string | null }) => {
     <>
       <Button onClick={toggleDrawer("right", true)}>
         <MenuIcon
-          sx={{ fontSize: "2rem", color: pathname == "/" ? "white" : "black" }}
+          sx={{ fontSize: "2rem", color: theme.palette.text.primary }}
         />
       </Button>
       <Drawer

@@ -1,19 +1,59 @@
+/* eslint-disable indent */
 "use client";
 import { Box, Button, Typography } from "@mui/material";
 import styles from "./header.module.css";
 import Image from "next/image";
 import COIL_logo_light from "../../public/COIL-logo-light.png";
-import COIL_logo_dark from "../../public/COIL-logo-dark.png";
 import Link from "next/link";
 import DrawerButton from "./drawer";
 import { usePathname } from "next/navigation";
+import { useTheme } from "@mui/material/styles";
 
 const Header = () => {
   const pathname = usePathname();
+  const theme = useTheme();
 
   return (
-    <header className={pathname == "/" ? styles.header_home : styles.header}>
-      <Box className={styles.container}>
+    <Box
+      component="header"
+      sx={
+        pathname == "/"
+          ? {
+              width: "100%",
+              boxShadow: "0 5px 30px rgba(0, 0, 0, 0.2)",
+              backdropFilter: "blur(8.4px)",
+              "&&:-webkit-backdrop-filter": "blur(8.4px)",
+              position: "sticky",
+              top: "0",
+              zIndex: 1,
+              "@media (min-width: 900px)": {
+                height: "88px",
+                marginTop: "-88px",
+              },
+              "@media (max-width: 900px)": {
+                height: "72px",
+                marginTop: "-72px",
+              },
+            }
+          : {
+              width: "100%",
+              boxShadow: "0 4px 20px rgba(0, 0, 0, 0.2)",
+              position: "sticky",
+              top: "0",
+              zIndex: 1,
+              backgroundColor: theme.palette.background.paper,
+            }
+      }
+    >
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "5px 30px",
+        }}
+      >
         <Link
           href="/"
           style={{
@@ -25,7 +65,7 @@ const Header = () => {
         >
           <Image
             className={styles.logo}
-            src={pathname == "/" ? COIL_logo_light : COIL_logo_dark}
+            src={COIL_logo_light}
             alt="Logo"
             priority
           />
@@ -42,14 +82,14 @@ const Header = () => {
             },
           }}
         >
-          <DrawerButton pathname={pathname} />
+          <DrawerButton />
         </Box>
         <Box
           sx={{
             display: "flex",
             flexDirection: "row",
             alignItems: "center",
-            gap: "5px",
+            gap: "20px",
             justifyContent: "flex-end",
             margin: 0,
             "@media (max-width: 900px)": {
@@ -57,145 +97,98 @@ const Header = () => {
             },
           }}
         >
-          <Link href="/" style={{ textDecoration: "none" }}>
-            {pathname == "/" ? (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              gap: "15px",
+              justifyContent: "flex-end",
+              margin: 0,
+            }}
+          >
+            <Link
+              href="/"
+              style={{
+                textDecoration: "none",
+                padding: "5px 10px",
+              }}
+            >
               <Typography
+                color={theme.palette.text.primary}
                 sx={{
-                  color: "white",
-                  padding: "5px 20px",
-                  textDecoration: "none",
-                  transition: ".3s",
+                  transition: ".2s",
                   "&&:hover": {
-                    color: "rgba(125, 250, 125, 1)",
+                    color: theme.palette.primary.main,
+                    textShadow:
+                      "0 0 5px rgba(125, 225, 125, 0.5), 0 0 15px rgba(125, 250, 125, 1)",
                   },
                 }}
               >
                 Inicio
               </Typography>
-            ) : (
+            </Link>
+            <Link
+              href="/books"
+              style={{ textDecoration: "none", padding: "5px 10px" }}
+            >
               <Typography
+                color={theme.palette.text.primary}
                 sx={{
-                  color: "black",
-                  padding: "5px 20px",
-                  textDecoration: "none",
-                  transition: ".3s",
+                  transition: ".2s",
                   "&&:hover": {
-                    textDecoration: "underline",
+                    color: theme.palette.primary.main,
+                    textShadow:
+                      "0 0 5px rgba(125, 225, 125, 0.5), 0 0 15px rgba(125, 250, 125, 1)",
                   },
                 }}
               >
-                Inicio
+                Biblioteca
               </Typography>
-            )}
-          </Link>
-          <Link href="/books" style={{ textDecoration: "none" }}>
-            {pathname == "/" ? (
-              <Typography
-                sx={{
-                  color: "white",
-                  padding: "5px 20px",
-                  textDecoration: "none",
-                  transition: ".3s",
-                  "&&:hover": {
-                    color: "rgba(125, 250, 125, 1)",
-                  },
-                }}
-              >
-                Libros
-              </Typography>
-            ) : (
-              <Typography
-                sx={{
-                  color: "black",
-                  padding: "5px 20px",
-                  textDecoration: "none",
-                  transition: ".3s",
-                  "&&:hover": {
-                    textDecoration: "underline",
-                  },
-                }}
-              >
-                Libros
-              </Typography>
-            )}
-          </Link>
-          <Link href="/register">
-            {pathname == "/" ? (
+            </Link>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              gap: "5px",
+              justifyContent: "flex-end",
+              margin: 0,
+            }}
+          >
+            <Link href="/register">
               <Button
                 variant="outlined"
                 sx={{
-                  color: "white",
-                  borderRadius: "30px",
-                  borderColor: "white",
-                  transition: ".3s",
+                  color: theme.palette.text.primary,
+                  borderColor: theme.palette.text.primary,
                   "&&:hover": {
-                    backgroundColor: "rgba(0,0,0,0.3)",
-                    color: "rgba(125, 250, 125, 1)",
-                    borderColor: "rgba(125, 250, 125, 1)",
+                    color: theme.palette.primary.main,
                   },
                 }}
               >
                 Registrarse
               </Button>
-            ) : (
+            </Link>
+            <Link href="/login">
               <Button
                 variant="outlined"
                 sx={{
-                  color: "black",
-                  borderRadius: "30px",
-                  borderColor: "black",
-                  transition: ".3s",
+                  color: theme.palette.text.primary,
+                  borderColor: theme.palette.text.primary,
                   "&&:hover": {
-                    backgroundColor: "rgba(0,0,0,0.3)",
-                    color: "white)",
-                    borderColor: "black",
-                  },
-                }}
-              >
-                Registrarse
-              </Button>
-            )}
-          </Link>
-          <Link href="/login">
-            {pathname == "/" ? (
-              <Button
-                variant="outlined"
-                sx={{
-                  color: "white",
-                  borderRadius: "30px",
-                  borderColor: "white",
-                  transition: ".3s",
-                  "&&:hover": {
-                    backgroundColor: "rgba(0,0,0,0.3)",
-                    color: "rgba(125, 250, 125, 1)",
-                    borderColor: "rgba(125, 250, 125, 1)",
+                    color: theme.palette.primary.main,
                   },
                 }}
               >
                 Iniciar sesión
               </Button>
-            ) : (
-              <Button
-                variant="outlined"
-                sx={{
-                  color: "black",
-                  borderRadius: "30px",
-                  borderColor: "black",
-                  transition: ".3s",
-                  "&&:hover": {
-                    backgroundColor: "rgba(0,0,0,0.3)",
-                    color: "white)",
-                    borderColor: "black",
-                  },
-                }}
-              >
-                Iniciar sesión
-              </Button>
-            )}
-          </Link>
+            </Link>
+          </Box>
         </Box>
       </Box>
-    </header>
+    </Box>
   );
 };
 export default Header;
