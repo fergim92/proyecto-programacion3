@@ -1,0 +1,8 @@
+.book_info {
+  @media (min-width: 900px) {
+    font-size: 16px;
+  }
+  @media (max-width: 900px) {
+    font-size: 13px;
+  }
+}

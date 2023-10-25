@@ -1,9 +1,9 @@
-import { Typography } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 
 export default function Loading() {
   return (
     <main>
-      <Typography>Cargando...</Typography>
+      <CircularProgress sx={{ color: "#191919" }} />
     </main>
   );
 }

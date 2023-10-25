@@ -1,3 +1,4 @@
+"use client";
 import {
   Card,
   CardActionArea,
@@ -9,17 +10,8 @@ import {
   CardActions,
   Link,
 } from "@mui/material";
-
-async function getData() {
-  const res = await fetch(
-    "https://proyecto-programacion3-bmv3.vercel.app/api/books"
-  );
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-
-  return res.json();
-}
+import { useEffect, useState } from "react";
+import CircularProgress from "@mui/material/CircularProgress";
 
 interface BookType {
   ISBN: string;
@@ -31,8 +23,31 @@ interface BookType {
   titulo: string;
 }
 
-const Books = async () => {
-  const data = await getData();
+const Books = () => {
+  const [data, setData] = useState<BookType[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const res = await fetch(
+        "https://proyecto-programacion3-bmv3.vercel.app/api/books",
+        { cache: "no-store" }
+      );
+      if (!res.ok) {
+        throw new Error("Failed to fetch data");
+      }
+      const books = await res.json();
+      setData(books);
+      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <CircularProgress sx={{ color: "#191919" }} />;
+  }
 
   return (
     <main style={{ height: "auto" }}>
