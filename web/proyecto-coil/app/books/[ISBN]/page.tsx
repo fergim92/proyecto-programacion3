@@ -70,14 +70,17 @@ const BookDetail = () => {
           sx={{
             margin: "15px",
             display: "flex",
-
             justifyContent: "space-between",
             alignItems: "center",
             "@media (min-width: 900px)": {
               flexDirection: "row",
+              width: "100%",
+              maxWidth: "700px",
             },
             "@media (max-width: 900px)": {
               flexDirection: "column",
+              width: "100%",
+              maxWidth: "300px",
             },
           }}
           key={data.ISBN}
@@ -86,10 +89,10 @@ const BookDetail = () => {
             component="img"
             sx={{
               "@media (min-width: 900px)": {
-                maxHeight: "300px",
+                maxHeight: "500px",
               },
               "@media (max-width: 900px)": {
-                maxHeight: "215px",
+                maxHeight: "350px",
               },
             }}
             image={data.imagen_url}

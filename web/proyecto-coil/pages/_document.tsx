@@ -11,10 +11,8 @@ export default function Document() {
           rel="stylesheet"
         />
       </Head>
-      <body style={{ height: "100%" }}>
-        <Main />
-        <NextScript />
-      </body>
+      <Main />
+      <NextScript />
     </Html>
   );
 }

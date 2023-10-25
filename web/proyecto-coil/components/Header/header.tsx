@@ -27,6 +27,7 @@ const Header = () => {
             className={styles.logo}
             src={pathname == "/" ? COIL_logo_light : COIL_logo_dark}
             alt="Logo"
+            priority
           />
         </Link>
         <Box

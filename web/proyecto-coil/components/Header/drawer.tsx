@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Typography } from "@mui/material";
 import Link from "next/link";
+import CloseIcon from "@mui/icons-material/Close";
 
 type Anchor = "top" | "left" | "bottom" | "right";
 
@@ -31,19 +32,31 @@ const TemporaryDrawer = ({ pathname }: { pathname: string | null }) => {
   const list = () => (
     <Box
       sx={{
-        width: 250,
-        marginTop: "20px",
+        width: 230,
+        marginTop: "50px",
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        alignItems: "center",
+        alignItems: "flex-start",
         gap: "10px",
       }}
       role="presentation"
-      onClick={toggleDrawer("right", false)}
       onKeyDown={toggleDrawer("right", false)}
     >
-      <Link href="/" style={{ textDecoration: "none" }}>
+      <CloseIcon
+        onClick={toggleDrawer("right", false)}
+        sx={{
+          position: "absolute",
+          left: "15px",
+          top: "15px",
+          fontSize: "24px",
+        }}
+      />
+      <Link
+        href="/"
+        style={{ textDecoration: "none" }}
+        onClick={toggleDrawer("right", false)}
+      >
         <Typography
           sx={{
             color: "black",
@@ -59,7 +72,11 @@ const TemporaryDrawer = ({ pathname }: { pathname: string | null }) => {
           Inicio
         </Typography>
       </Link>
-      <Link href="/books" style={{ textDecoration: "none" }}>
+      <Link
+        href="/books"
+        style={{ textDecoration: "none" }}
+        onClick={toggleDrawer("right", false)}
+      >
         <Typography
           sx={{
             color: "black",
@@ -75,7 +92,7 @@ const TemporaryDrawer = ({ pathname }: { pathname: string | null }) => {
           Libros
         </Typography>
       </Link>
-      <Link href="/register">
+      <Link href="/register" onClick={toggleDrawer("right", false)}>
         <Button
           variant="outlined"
           sx={{
@@ -93,7 +110,7 @@ const TemporaryDrawer = ({ pathname }: { pathname: string | null }) => {
           Registrarse
         </Button>
       </Link>
-      <Link href="/login">
+      <Link href="/login" onClick={toggleDrawer("right", false)}>
         <Button
           variant="outlined"
           sx={{

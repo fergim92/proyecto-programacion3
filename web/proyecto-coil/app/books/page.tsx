@@ -62,7 +62,13 @@ const Books = () => {
           <Card
             raised
             sx={{
-              maxWidth: 180,
+              width: "100%",
+              "@media (min-width: 900px)": {
+                maxWidth: "200px",
+              },
+              "@media (max-width: 900px)": {
+                maxWidth: "300px",
+              },
               margin: "15px",
               display: "flex",
               flexDirection: "column",
@@ -74,12 +80,16 @@ const Books = () => {
             <CardActionArea>
               <CardMedia
                 component="img"
-                sx={{ maxHeight: "280px" }}
-                image={
-                  book.imagen_url
-                    ? book.imagen_url
-                    : "https://dummyimage.com/277x425/000/fff.jpg&text=Image+not+found"
-                }
+                sx={{
+                  height: "100%",
+                  "@media (min-width: 900px)": {
+                    maxHeight: "280px",
+                  },
+                  "@media (max-width: 900px)": {
+                    maxHeight: "350px",
+                  },
+                }}
+                image={book.imagen_url}
                 title={book.titulo}
                 alt={book.titulo}
               />
@@ -98,8 +108,8 @@ const Books = () => {
             </CardActionArea>
             <CardActions>
               <Link href={`/books/${book.ISBN}`}>
-                <Button size="small" color="primary">
-                  Detalle
+                <Button size="medium" color="primary">
+                  Ver detalles
                 </Button>
               </Link>
             </CardActions>
