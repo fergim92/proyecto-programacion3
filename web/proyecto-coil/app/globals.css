@@ -10,10 +10,4 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
-  @media (min-width: 900px) {
-    margin-top: 98px;
-  }
-  @media (max-width: 900px) {
-    margin-top: 82px;
-  }
 }

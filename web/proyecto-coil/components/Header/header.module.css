@@ -1,16 +1,30 @@
-.header {
+.header_home {
   width: 100%;
   background: rgba(0, 0, 0, 0.34);
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(8.4px);
   -webkit-backdrop-filter: blur(8.4px);
-  position: absolute;
+  position: sticky;
+  top: 0;
+
   @media (min-width: 900px) {
     height: 98px;
+    margin-top: -98px;
   }
   @media (max-width: 900px) {
     height: 82px;
+    margin-top: -82px;
   }
+}
+.header {
+  width: 100%;
+  background: white;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(8.4px);
+  -webkit-backdrop-filter: blur(8.4px);
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 .logo {
   width: 100%;
@@ -22,6 +36,28 @@
   @media (max-width: 900px) {
     max-width: 150px;
   }
+}
+.button_home {
+  color: white;
+  border-radius: "30px";
+  border-color: "white";
+  transition: ".3s";
+}
+.button_home:hover {
+  background-color: "rgba(0,0,0,0.3)";
+  color: "rgba(125, 250, 125, 1)";
+  border-color: "rgba(125, 250, 125, 1)";
+}
+.button {
+  color: black;
+  border-radius: "30px";
+  border-color: "black";
+  transition: ".3s";
+}
+.button:hover {
+  background-color: "rgba(0,0,0,0.3)";
+  color: "rgba(125, 250, 125, 1)";
+  border-color: "rgba(125, 250, 125, 1)";
 }
 
 .container {

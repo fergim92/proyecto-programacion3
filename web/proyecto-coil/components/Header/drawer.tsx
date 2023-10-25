@@ -9,7 +9,7 @@ import Link from "next/link";
 
 type Anchor = "top" | "left" | "bottom" | "right";
 
-export default function TemporaryDrawer() {
+const TemporaryDrawer = ({ pathname }: { pathname: string | null }) => {
   const [state, setState] = React.useState({
     right: false,
   });
@@ -59,6 +59,22 @@ export default function TemporaryDrawer() {
           Inicio
         </Typography>
       </Link>
+      <Link href="/books" style={{ textDecoration: "none" }}>
+        <Typography
+          sx={{
+            color: "black",
+            padding: "5px 20px",
+            textDecoration: "none",
+            transition: ".3s",
+            "&&:hover": {
+              transform: "scale(1.1)",
+              transition: ".3s",
+            },
+          }}
+        >
+          Libros
+        </Typography>
+      </Link>
       <Link href="/register">
         <Button
           variant="outlined"
@@ -101,7 +117,9 @@ export default function TemporaryDrawer() {
   return (
     <>
       <Button onClick={toggleDrawer("right", true)}>
-        <MenuIcon sx={{ fontSize: "2rem", color: "white" }} />
+        <MenuIcon
+          sx={{ fontSize: "2rem", color: pathname == "/" ? "white" : "black" }}
+        />
       </Button>
       <Drawer
         anchor="right"
@@ -112,4 +130,5 @@ export default function TemporaryDrawer() {
       </Drawer>
     </>
   );
-}
+};
+export default TemporaryDrawer;
