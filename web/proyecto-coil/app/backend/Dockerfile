@@ -1,21 +1,26 @@
-# Usa una imagen base de Python
+# Usamos una imagen base de Python
 FROM python:3.9-slim
 
-# Establece el directorio de trabajo
+# Directorio de trabajo dentro del contenedor
 WORKDIR /backend
+ENV PYTHONPATH /backend
 
-# Copia los archivos de tu aplicación al contenedor
+# Copiamos los archivos de requisitos primero para optimizar la construcción del contenedor (usando la caché de Docker)
+COPY requirements.txt requirements.txt
+
+# Instalamos las dependencias
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copiamos el resto de los archivos
 COPY . .
 
-# Actualiza pip
-RUN pip install --no-cache-dir --upgrade pip
-
-# Instala las dependencias de la aplicación
-RUN pip install -r requirements.txt
-
-# Expone el puerto en el que se ejecutará la aplicación Flask
+# Exponemos el puerto que nuestra aplicación usará
 EXPOSE 8080
 
-# Comando para ejecutar la aplicación Flask
-CMD ["python", "app.py"]
+
+# Establecemos la variable de entorno para las credenciales de Google Cloud (si estás usando un archivo JSON como credencial)
+ENV GOOGLE_APPLICATION_CREDENTIALS=service_account_key.json
+
+CMD ["python", "-m", "routes.LibroAPI"]
+
 
