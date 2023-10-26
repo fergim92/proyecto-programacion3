@@ -4,15 +4,21 @@ import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import Button from "@mui/material/Button";
 import MenuIcon from "@mui/icons-material/Menu";
+import IconButton from "@mui/material/IconButton";
 import { Typography } from "@mui/material";
 import Link from "next/link";
 import CloseIcon from "@mui/icons-material/Close";
 import { useTheme } from "@mui/material/styles";
+import { alpha } from "@mui/material";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
+import { ColorModeContext } from "@/context/ColorModeContext";
 
 type Anchor = "top" | "left" | "bottom" | "right";
 
 const TemporaryDrawer = () => {
   const theme = useTheme();
+  const colorMode = React.useContext(ColorModeContext);
   const [state, setState] = React.useState({
     right: false,
   });
@@ -56,26 +62,38 @@ const TemporaryDrawer = () => {
           fontSize: "24px",
           "&&:hover": {
             color: theme.palette.primary.main,
-            textShadow:
-              "0 0 5px rgba(125, 225, 125, 0.5), 0 0 15px rgba(125, 250, 125, 1)",
+            textShadow: `0 0 5px ${alpha(
+              theme.palette.primary.main,
+              0.5
+            )}, 0 0 15px ${theme.palette.primary.main}`,
           },
         }}
       />
+      <Box>
+        <IconButton onClick={colorMode.toggleColorMode}>
+          {theme.palette.mode === "dark" ? (
+            <Brightness7Icon />
+          ) : (
+            <Brightness4Icon />
+          )}
+        </IconButton>
+      </Box>
+
       <Link
         href="/"
         style={{ textDecoration: "none" }}
         onClick={toggleDrawer("right", false)}
       >
         <Typography
+          color={theme.palette.text.primary}
           sx={{
-            color: theme.palette.text.primary,
-            padding: "5px 20px",
-            textDecoration: "none",
             transition: ".2s",
             "&&:hover": {
               color: theme.palette.primary.main,
-              textShadow:
-                "0 0 5px rgba(125, 225, 125, 0.5), 0 0 15px rgba(125, 250, 125, 1)",
+              textShadow: `0 0 5px ${alpha(
+                theme.palette.primary.main,
+                0.5
+              )}, 0 0 15px ${theme.palette.primary.main}`,
             },
           }}
         >
@@ -88,48 +106,62 @@ const TemporaryDrawer = () => {
         onClick={toggleDrawer("right", false)}
       >
         <Typography
+          color={theme.palette.text.primary}
           sx={{
-            color: theme.palette.text.primary,
-            padding: "5px 20px",
-            textDecoration: "none",
             transition: ".2s",
             "&&:hover": {
               color: theme.palette.primary.main,
-              textShadow:
-                "0 0 5px rgba(125, 225, 125, 0.5), 0 0 15px rgba(125, 250, 125, 1)",
+              textShadow: `0 0 5px ${alpha(
+                theme.palette.primary.main,
+                0.5
+              )}, 0 0 15px ${theme.palette.primary.main}`,
             },
           }}
         >
           Biblioteca
         </Typography>
       </Link>
-      <Link href="/register" onClick={toggleDrawer("right", false)}>
-        <Button
-          variant="outlined"
+      <Link
+        href="/register"
+        onClick={toggleDrawer("right", false)}
+        style={{ textDecoration: "none" }}
+      >
+        <Typography
+          color={theme.palette.text.primary}
           sx={{
-            color: theme.palette.text.primary,
-            borderColor: theme.palette.text.primary,
+            transition: ".2s",
             "&&:hover": {
               color: theme.palette.primary.main,
+              textShadow: `0 0 5px ${alpha(
+                theme.palette.primary.main,
+                0.5
+              )}, 0 0 15px ${theme.palette.primary.main}`,
             },
           }}
         >
           Registrarse
-        </Button>
+        </Typography>
       </Link>
-      <Link href="/login" onClick={toggleDrawer("right", false)}>
-        <Button
-          variant="outlined"
+      <Link
+        href="/login"
+        onClick={toggleDrawer("right", false)}
+        style={{ textDecoration: "none" }}
+      >
+        <Typography
+          color={theme.palette.text.primary}
           sx={{
-            color: theme.palette.text.primary,
-            borderColor: theme.palette.text.primary,
+            transition: ".2s",
             "&&:hover": {
               color: theme.palette.primary.main,
+              textShadow: `0 0 5px ${alpha(
+                theme.palette.primary.main,
+                0.5
+              )}, 0 0 15px ${theme.palette.primary.main}`,
             },
           }}
         >
           Iniciar sesión
-        </Button>
+        </Typography>
       </Link>
     </Box>
   );

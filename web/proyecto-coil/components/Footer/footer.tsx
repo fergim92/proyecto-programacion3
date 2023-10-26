@@ -1,25 +1,21 @@
-import { Typography } from "@mui/material";
+"use client";
+import { Box, Typography } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 
 const Footer = () => {
+  const theme = useTheme();
   return (
-    <footer
-      style={{
-        backgroundColor: "#191919",
+    <Box
+      component="footer"
+      sx={{
+        backgroundColor: theme.palette.background.paper,
         width: "100%",
       }}
     >
-      <Typography
-        variant="body2"
-        color="text.secondary"
-        align="center"
-        padding={3}
-        sx={{
-          color: "white",
-        }}
-      >
+      <Typography variant="body2" align="center" padding={3}>
         @2023 - Todos los derechos reservados PUCP-UNRN
       </Typography>
-    </footer>
+    </Box>
   );
 };
 export default Footer;

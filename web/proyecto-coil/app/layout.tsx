@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import Loading from "./loading";
 import Header from "@/components/Header/header";
 import Footer from "@/components/Footer/footer";
-import Theme from "./providers";
+import ThemeContext from "../components/ToggleTheme/toggleColorMode";
 
 export const metadata: Metadata = {
   title: "Proyecto COIL",
@@ -28,11 +28,11 @@ export default function RootLayout({
             alignItems: "center",
           }}
         >
-          <Theme>
+          <ThemeContext>
             <Header />
             {children}
             <Footer />
-          </Theme>
+          </ThemeContext>
         </body>
       </Suspense>
     </html>
