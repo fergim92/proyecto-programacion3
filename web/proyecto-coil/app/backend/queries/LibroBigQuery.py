@@ -78,7 +78,8 @@ class LibroBigQuery:
 
         if updates:
             # Construye la consulta SQL de actualización.
-            query = f"UPDATE `{self.project_id}.{self.dataset_id}.{self.table_id}` SET {', '.join(updates)} WHERE ISBN = '{ISBN}'"
+            query = f"UPDATE `{self.table_id}` SET {', '.join(updates)} WHERE ISBN = '{ISBN}'"
+
             # Ejecuta la consulta.
             self.client.query(query).result()
 

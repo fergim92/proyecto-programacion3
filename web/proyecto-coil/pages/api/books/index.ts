@@ -6,7 +6,7 @@ export default async function handler(
 ) {
   const response = await fetch(
     // eslint-disable-next-line quotes
-    `https://imagenv8-i33jpf2c6a-uc.a.run.app/libros`
+    `https://imagenv9-i33jpf2c6a-uc.a.run.app/libros`
   );
   const data = await response.json();
   res.status(200).json(data);
