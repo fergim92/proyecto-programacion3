@@ -4,14 +4,14 @@
   justify-content: center;
   align-items: center;
   margin-top: 0px;
-  background-color: #191919;
   background-repeat: no-repeat;
-  background-size: 100% 100%;
+  background-size: cover; /* o 'contain' */
+  background-position: center; /* Centra el SVG en el contenedor */
   @media (min-width: 900px) {
-    background-image: url("../../public/light-background.jpg");
+    background-image: url("../../public/light-background.svg");
   }
   @media (max-width: 900px) {
-    background-image: url("../../public/light-background-mobile.jpg");
+    background-image: url("../../public/light-background.svg");
   }
 }
 .main_dark {
@@ -20,13 +20,13 @@
   justify-content: center;
   align-items: center;
   margin-top: 0px;
-  background-color: #191919;
   background-repeat: no-repeat;
-  background-size: 100% 100%;
+  background-size: cover; /* o 'contain' */
+  background-position: center; /* Centra el SVG en el contenedor */
   @media (min-width: 900px) {
-    background-image: url("../../public/dark-background.jpg");
+    background-image: url("../../public/dark-background.svg");
   }
   @media (max-width: 900px) {
-    background-image: url("../../public/dark-background-mobile.jpg");
+    background-image: url("../../public/dark-background.svg");
   }
 }

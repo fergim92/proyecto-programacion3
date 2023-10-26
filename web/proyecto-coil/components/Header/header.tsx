@@ -32,7 +32,7 @@ const Header = () => {
               "&&:WebkitBackdropFilter": "blur(8.4px)",
               position: "sticky",
               top: "0",
-              zIndex: 1,
+              zIndex: 999,
               "@media (min-width: 900px)": {
                 height: "88px",
                 marginTop: "-88px",
@@ -47,7 +47,7 @@ const Header = () => {
               boxShadow: "0 4px 20px rgba(0, 0, 0, 0.2)",
               position: "sticky",
               top: "0",
-              zIndex: 1,
+              zIndex: 999,
               backgroundColor: theme.palette.background.paper,
             }
       }

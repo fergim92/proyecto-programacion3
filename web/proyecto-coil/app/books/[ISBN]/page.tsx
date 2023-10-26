@@ -35,17 +35,12 @@ const BookDetail = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const res = await fetch(
-        "https://proyecto-programacion3-bmv3.vercel.app/api/books"
-      );
+      const res = await fetch(`/api/books/${isbnFromPathname}`);
       if (!res.ok) {
         throw new Error("Failed to fetch data");
       }
-      const books = await res.json();
-      const bookWithISBN = books.find(
-        (book: BookType) => book.ISBN === isbnFromPathname
-      );
-      setData(bookWithISBN);
+      const book = await res.json();
+      setData(book);
       setLoading(false);
     };
 

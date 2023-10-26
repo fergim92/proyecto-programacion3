@@ -7,11 +7,16 @@ import {
   Box,
   Button,
   CardActions,
-  Link,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import Loader from "@/components/Loader/loader";
+import Link from "next/link";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import FormAddBook from "@/components/FormController/form-add-book";
 
 interface BookType {
   ISBN: string;
@@ -31,10 +36,7 @@ const Books = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
-      const res = await fetch(
-        "https://proyecto-programacion3-bmv3.vercel.app/api/books",
-        { cache: "no-store" }
-      );
+      const res = await fetch("/api/books", { cache: "no-store" });
       if (!res.ok) {
         throw new Error("Failed to fetch data");
       }
@@ -51,7 +53,19 @@ const Books = () => {
   }
 
   return (
-    <main style={{ height: "auto" }}>
+    <main style={{ height: "auto", display: "flex", flexDirection: "column" }}>
+      <Accordion sx={{ width: "100%" }}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1a-content"
+          id="panel1a-header"
+        >
+          <Typography>Agregar libro</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <FormAddBook />
+        </AccordionDetails>
+      </Accordion>
       <Box
         sx={{
           display: "flex",
