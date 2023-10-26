@@ -44,11 +44,29 @@ class LibroAPI:
     @staticmethod
     def modificar_libro(ISBN):
         libro_bq = LibroBigQuery(project_id="ancient-tractor-402615", dataset_id="proyecto", table_id="libro")
+        
+        # Extraer datos del cuerpo de la solicitud.
         data = request.json
-        # ... (procesamiento de datos)
-        libro_bq.modificar_libro(...)
+        titulo = data.get('titulo')
+        cantidad_disponible = data.get('cantidad_disponible')
+        anio_de_publicacion = data.get('anio_de_publicacion')
+        id_idioma = data.get('id_idioma')
+        id_editorial = data.get('id_editorial')
+        imagen_url = data.get('imagen_url')
+        
+        # Pasar los datos al método `modificar_libro` de la clase `LibroBigQuery`.
+        libro_bq.modificar_libro(
+            ISBN=ISBN,
+            titulo=titulo,
+            cantidad_disponible=cantidad_disponible,
+            anio_de_publicacion=anio_de_publicacion,
+            id_idioma=id_idioma,
+            id_editorial=id_editorial,
+            imagen_url=imagen_url
+        )
+        
         return jsonify({"message": "Libro modificado con éxito"}), 200
-    
+
     @staticmethod
     def obtener_libro_por_isbn(ISBN):
         libro_bq = LibroBigQuery(project_id="ancient-tractor-402615", dataset_id="proyecto", table_id="libro")
