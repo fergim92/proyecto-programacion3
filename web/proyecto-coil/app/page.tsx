@@ -1,14 +1,20 @@
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import styles from "./page.module.css";
+import MainBackground from "@/components/MainBackground/mainBackground";
+import Typing from "@/components/Typing/typing";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <main className={styles.main}>
+    <MainBackground>
       <Box className={styles.main_text_container}>
-        <h1 className={styles.main_text}>
-          Hola! Nosotros somos&nbsp;<span className={styles.typewriter}></span>
-        </h1>
+        <Typing />
       </Box>
-    </main>
+      <Link href="/books">
+        <Button className={styles.main_button} sx={{ marginTop: "50px" }}>
+          Visita nuestra biblioteca
+        </Button>
+      </Link>
+    </MainBackground>
   );
 }

@@ -1,17 +1,24 @@
 /* eslint-disable indent */
 "use client";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
 import styles from "./header.module.css";
 import Image from "next/image";
 import COIL_logo_light from "../../public/COIL-logo-light.png";
+import COIL_logo_dark from "../../public/COIL-logo-dark.png";
 import Link from "next/link";
 import DrawerButton from "./drawer";
 import { usePathname } from "next/navigation";
 import { useTheme } from "@mui/material/styles";
+import React from "react";
+import { ColorModeContext } from "@/context/ColorModeContext";
+import Brightness4Icon from "@mui/icons-material/Brightness4";
+import Brightness7Icon from "@mui/icons-material/Brightness7";
+import { alpha } from "@mui/material";
 
 const Header = () => {
   const pathname = usePathname();
   const theme = useTheme();
+  const colorMode = React.useContext(ColorModeContext);
 
   return (
     <Box
@@ -22,7 +29,7 @@ const Header = () => {
               width: "100%",
               boxShadow: "0 5px 30px rgba(0, 0, 0, 0.2)",
               backdropFilter: "blur(8.4px)",
-              "&&:-webkit-backdrop-filter": "blur(8.4px)",
+              "&&:WebkitBackdropFilter": "blur(8.4px)",
               position: "sticky",
               top: "0",
               zIndex: 1,
@@ -65,7 +72,9 @@ const Header = () => {
         >
           <Image
             className={styles.logo}
-            src={COIL_logo_light}
+            src={
+              theme.palette.mode == "light" ? COIL_logo_dark : COIL_logo_light
+            }
             alt="Logo"
             priority
           />
@@ -120,8 +129,10 @@ const Header = () => {
                   transition: ".2s",
                   "&&:hover": {
                     color: theme.palette.primary.main,
-                    textShadow:
-                      "0 0 5px rgba(125, 225, 125, 0.5), 0 0 15px rgba(125, 250, 125, 1)",
+                    textShadow: `0 0 5px ${alpha(
+                      theme.palette.primary.main,
+                      0.5
+                    )}, 0 0 15px ${theme.palette.primary.main}`,
                   },
                 }}
               >
@@ -138,54 +149,68 @@ const Header = () => {
                   transition: ".2s",
                   "&&:hover": {
                     color: theme.palette.primary.main,
-                    textShadow:
-                      "0 0 5px rgba(125, 225, 125, 0.5), 0 0 15px rgba(125, 250, 125, 1)",
+                    textShadow: `0 0 5px ${alpha(
+                      theme.palette.primary.main,
+                      0.5
+                    )}, 0 0 15px ${theme.palette.primary.main}`,
                   },
                 }}
               >
                 Biblioteca
               </Typography>
             </Link>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              gap: "5px",
-              justifyContent: "flex-end",
-              margin: 0,
-            }}
-          >
-            <Link href="/register">
-              <Button
-                variant="outlined"
+            <Link
+              href="/register"
+              style={{ textDecoration: "none", padding: "5px 10px" }}
+            >
+              <Typography
+                color={theme.palette.text.primary}
                 sx={{
-                  color: theme.palette.text.primary,
-                  borderColor: theme.palette.text.primary,
+                  transition: ".2s",
                   "&&:hover": {
                     color: theme.palette.primary.main,
+                    textShadow: `0 0 5px ${alpha(
+                      theme.palette.primary.main,
+                      0.5
+                    )}, 0 0 15px ${theme.palette.primary.main}`,
                   },
                 }}
               >
                 Registrarse
-              </Button>
+              </Typography>
             </Link>
-            <Link href="/login">
-              <Button
-                variant="outlined"
+            <Link
+              href="/login"
+              style={{ textDecoration: "none", padding: "5px 10px" }}
+            >
+              <Typography
+                color={theme.palette.text.primary}
                 sx={{
-                  color: theme.palette.text.primary,
-                  borderColor: theme.palette.text.primary,
+                  transition: ".2s",
                   "&&:hover": {
                     color: theme.palette.primary.main,
+                    textShadow: `0 0 5px ${alpha(
+                      theme.palette.primary.main,
+                      0.5
+                    )}, 0 0 15px ${theme.palette.primary.main}`,
                   },
                 }}
               >
                 Iniciar sesión
-              </Button>
+              </Typography>
             </Link>
           </Box>
+          <IconButton
+            sx={{ ml: 1 }}
+            onClick={colorMode.toggleColorMode}
+            color="inherit"
+          >
+            {theme.palette.mode === "dark" ? (
+              <Brightness7Icon />
+            ) : (
+              <Brightness4Icon />
+            )}
+          </IconButton>
         </Box>
       </Box>
     </Box>

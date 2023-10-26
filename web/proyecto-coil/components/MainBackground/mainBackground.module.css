@@ -1,0 +1,32 @@
+.main_light {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0px;
+  background-color: #191919;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  @media (min-width: 900px) {
+    background-image: url("../../public/light-background.jpg");
+  }
+  @media (max-width: 900px) {
+    background-image: url("../../public/light-background-mobile.jpg");
+  }
+}
+.main_dark {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0px;
+  background-color: #191919;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  @media (min-width: 900px) {
+    background-image: url("../../public/dark-background.jpg");
+  }
+  @media (max-width: 900px) {
+    background-image: url("../../public/dark-background-mobile.jpg");
+  }
+}
