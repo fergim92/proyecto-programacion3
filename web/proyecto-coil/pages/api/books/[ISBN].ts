@@ -8,21 +8,11 @@ export default async function handler(
     query: { ISBN },
   } = req;
 
-  const headers = new Headers();
-  // Copiar las cabeceras de req.headers al objeto Headers
-  for (const key of Object.keys(req.headers)) {
-    const value = req.headers[key];
-    if (typeof value === "string") {
-      headers.set(key, value);
-    }
-  }
-
   if (req.method === "POST") {
     const response = await fetch(
       "https://imagenv9-i33jpf2c6a-uc.a.run.app/libros",
       {
         method: req.method,
-        headers: headers,
         body: req.body,
       }
     );
@@ -33,7 +23,6 @@ export default async function handler(
       `https://imagenv9-i33jpf2c6a-uc.a.run.app/libros/${ISBN}`,
       {
         method: req.method,
-        headers: headers,
       }
     );
     const data = await response.json();
@@ -43,7 +32,6 @@ export default async function handler(
       `https://imagenv9-i33jpf2c6a-uc.a.run.app/libros/${ISBN}`,
       {
         method: req.method,
-        headers: headers,
         body: req.body,
       }
     );
@@ -55,7 +43,6 @@ export default async function handler(
       `https://imagenv9-i33jpf2c6a-uc.a.run.app/libros/${ISBN}`,
       {
         method: req.method,
-        headers: headers,
       }
     );
 
