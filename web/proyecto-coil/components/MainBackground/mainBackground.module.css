@@ -4,15 +4,57 @@
   justify-content: center;
   align-items: center;
   margin-top: 0px;
-  background-repeat: no-repeat;
-  background-size: cover; /* o 'contain' */
-  background-position: center; /* Centra el SVG en el contenedor */
-  @media (min-width: 900px) {
-    background-image: url("../../public/light-background.svg");
-  }
-  @media (max-width: 900px) {
-    background-image: url("../../public/light-background.svg");
-  }
+  background-image: linear-gradient(
+      30deg,
+      #ffffff 12%,
+      transparent 12.5%,
+      transparent 87%,
+      #ffffff 87.5%,
+      #ffffff
+    ),
+    linear-gradient(
+      150deg,
+      #ffffff 12%,
+      transparent 12.5%,
+      transparent 87%,
+      #ffffff 87.5%,
+      #ffffff
+    ),
+    linear-gradient(
+      30deg,
+      #ffffff 12%,
+      transparent 12.5%,
+      transparent 87%,
+      #ffffff 87.5%,
+      #ffffff
+    ),
+    linear-gradient(
+      150deg,
+      #ffffff 12%,
+      transparent 12.5%,
+      transparent 87%,
+      #ffffff 87.5%,
+      #ffffff
+    ),
+    linear-gradient(
+      60deg,
+      rgba(255, 255, 255, 0.5) 25%,
+      transparent 25.5%,
+      transparent 75%,
+      rgba(255, 255, 255, 0.5) 75%,
+      rgba(255, 255, 255, 0.5)
+    ),
+    linear-gradient(
+      60deg,
+      rgba(255, 255, 255, 0.5) 25%,
+      transparent 25.5%,
+      transparent 75%,
+      rgba(255, 255, 255, 0.5) 75%,
+      rgba(255, 255, 255, 0.5)
+    );
+  background-size: 64px 112px;
+  background-position: 0 0, 0 0, 32px 56px, 32px 56px, 0 0, 32px 56px;
+  background-color: #b7b7b7;
 }
 .main_dark {
   display: flex;
@@ -20,13 +62,55 @@
   justify-content: center;
   align-items: center;
   margin-top: 0px;
-  background-repeat: no-repeat;
-  background-size: cover; /* o 'contain' */
-  background-position: center; /* Centra el SVG en el contenedor */
-  @media (min-width: 900px) {
-    background-image: url("../../public/dark-background.svg");
-  }
-  @media (max-width: 900px) {
-    background-image: url("../../public/dark-background.svg");
-  }
+  background-image: linear-gradient(
+      30deg,
+      #121212 12%,
+      transparent 12.5%,
+      transparent 87%,
+      #121212 87.5%,
+      #121212
+    ),
+    linear-gradient(
+      150deg,
+      #121212 12%,
+      transparent 12.5%,
+      transparent 87%,
+      #121212 87.5%,
+      #121212
+    ),
+    linear-gradient(
+      30deg,
+      #121212 12%,
+      transparent 12.5%,
+      transparent 87%,
+      #121212 87.5%,
+      #121212
+    ),
+    linear-gradient(
+      150deg,
+      #121212 12%,
+      transparent 12.5%,
+      transparent 87%,
+      #121212 87.5%,
+      #121212
+    ),
+    linear-gradient(
+      60deg,
+      rgba(18, 18, 18, 0.5) 25%,
+      transparent 25.5%,
+      transparent 75%,
+      rgba(18, 18, 18, 0.5) 75%,
+      rgba(18, 18, 18, 0.5)
+    ),
+    linear-gradient(
+      60deg,
+      rgba(18, 18, 18, 0.5) 25%,
+      transparent 25.5%,
+      transparent 75%,
+      rgba(18, 18, 18, 0.5) 75%,
+      rgba(18, 18, 18, 0.5)
+    );
+  background-size: 64px 112px;
+  background-position: 0 0, 0 0, 32px 56px, 32px 56px, 0 0, 32px 56px;
+  background-color: #1a1a1a;
 }
