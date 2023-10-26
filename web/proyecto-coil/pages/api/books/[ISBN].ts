@@ -4,7 +4,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { isbn } = req.query;
+  const {
+    query: { ISBN },
+  } = req;
 
   const headers = new Headers();
   // Copiar las cabeceras de req.headers al objeto Headers
@@ -28,7 +30,7 @@ export default async function handler(
     res.status(response.status).json(data);
   } else if (req.method === "GET") {
     const response = await fetch(
-      `https://imagenv9-i33jpf2c6a-uc.a.run.app/libros/${isbn}`,
+      `https://imagenv9-i33jpf2c6a-uc.a.run.app/libros/${ISBN}`,
       {
         method: req.method,
         headers: headers,
@@ -38,7 +40,7 @@ export default async function handler(
     res.status(response.status).json(data);
   } else if (req.method === "PUT") {
     const response = await fetch(
-      `https://imagenv9-i33jpf2c6a-uc.a.run.app/libros/${isbn}`,
+      `https://imagenv9-i33jpf2c6a-uc.a.run.app/libros/${ISBN}`,
       {
         method: req.method,
         headers: headers,
@@ -50,7 +52,7 @@ export default async function handler(
     res.status(response.status).json(data);
   } else if (req.method === "DELETE") {
     const response = await fetch(
-      `https://imagenv9-i33jpf2c6a-uc.a.run.app/libros/${isbn}`,
+      `https://imagenv9-i33jpf2c6a-uc.a.run.app/libros/${ISBN}`,
       {
         method: req.method,
         headers: headers,

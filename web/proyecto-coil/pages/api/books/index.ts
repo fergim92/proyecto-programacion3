@@ -18,7 +18,6 @@ export default async function handler(
     {
       method: req.method, // El método de la solicitud (GET, POST, etc.)
       headers: headers, // Las cabeceras de la solicitud
-      body: req.body, // El cuerpo de la solicitud
     }
   );
 
