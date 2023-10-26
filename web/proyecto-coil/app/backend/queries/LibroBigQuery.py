@@ -61,15 +61,27 @@ class LibroBigQuery:
     def modificar_libro(self, ISBN, titulo=None, cantidad_disponible=None, anio_de_publicacion=None, id_idioma=None, id_editorial=None, imagen_url=None):
         # Lista de actualizaciones a realizar.
         updates = []
+
         # Comprueba qué campos se proporcionaron y construye la consulta SQL.
-        # ...
-        if updates:
-            query = f"UPDATE `{self.table_id}` SET {', '.join(updates)} WHERE ISBN = '{ISBN}'"
-            # Ejecuta la consulta.
-            self.client.query(query).result()
-        # Actualiza la URL de la imagen si se proporcionó.
+        if titulo:
+            updates.append(f"titulo = '{titulo}'")
+        if cantidad_disponible is not None:
+            updates.append(f"cantidad_disponible = {cantidad_disponible}")
+        if anio_de_publicacion:
+            updates.append(f"anio_de_publicacion = {anio_de_publicacion}")
+        if id_idioma:
+            updates.append(f"id_idioma = '{id_idioma}'")
+        if id_editorial:
+            updates.append(f"id_editorial = '{id_editorial}'")
         if imagen_url:
             updates.append(f"imagen_url = '{imagen_url}'")
+
+        if updates:
+            # Construye la consulta SQL de actualización.
+            query = f"UPDATE `{self.project_id}.{self.dataset_id}.{self.table_id}` SET {', '.join(updates)} WHERE ISBN = '{ISBN}'"
+            # Ejecuta la consulta.
+            self.client.query(query).result()
+
 
     # Método para consultar todos los libros de la tabla.
     def consulta_libros(self):
