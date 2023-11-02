@@ -37,7 +37,7 @@ const FormAddBook = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async () => {
     try {
       const response = await fetch("/api/books", {
         // Reemplaza '/api/books' con la URL de tu endpoint de la API
@@ -45,7 +45,7 @@ const FormAddBook = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data), // Convierte los datos del formulario a una cadena JSON
+        body: JSON.stringify({}), // Convierte los datos del formulario a una cadena JSON
       });
 
       if (!response.ok) {

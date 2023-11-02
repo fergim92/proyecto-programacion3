@@ -8,17 +8,7 @@ export default async function handler(
     query: { ISBN },
   } = req;
 
-  if (req.method === "POST") {
-    const response = await fetch(
-      "https://imagenv9-i33jpf2c6a-uc.a.run.app/libros",
-      {
-        method: req.method,
-        body: req.body,
-      }
-    );
-    const data = await response.json();
-    res.status(response.status).json(data);
-  } else if (req.method === "GET") {
+  if (req.method === "GET") {
     const response = await fetch(
       `https://imagenv9-i33jpf2c6a-uc.a.run.app/libros/${ISBN}`,
       {
