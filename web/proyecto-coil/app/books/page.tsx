@@ -32,21 +32,23 @@ const Books = () => {
   const [data, setData] = useState<BookType[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const theme = useTheme();
+  const [refreshData, setRefreshData] = useState(false);
+
+  const fetchData = async () => {
+    setLoading(true);
+    const res = await fetch("/api/books", { cache: "no-store" });
+    if (!res.ok) {
+      throw new Error("Failed to fetch data");
+    }
+    const books = await res.json();
+    setData(books);
+    setLoading(false);
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      const res = await fetch("/api/books", { cache: "no-store" });
-      if (!res.ok) {
-        throw new Error("Failed to fetch data");
-      }
-      const books = await res.json();
-      setData(books);
-      setLoading(false);
-    };
-
     fetchData();
-  }, []);
+    console.log("Me actualice");
+  }, [refreshData]);
 
   if (loading) {
     return <Loader />;
@@ -63,7 +65,7 @@ const Books = () => {
           <Typography>Agregar libro</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <FormAddBook />
+          <FormAddBook onBookAdded={() => setRefreshData(true)} />
         </AccordionDetails>
       </Accordion>
       <Box

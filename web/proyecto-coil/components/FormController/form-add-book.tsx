@@ -1,9 +1,16 @@
-import { Box, Button, FormControl, InputLabel } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControl,
+  InputLabel,
+  Typography,
+} from "@mui/material";
 import ControlledInput from "./controlled-input";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import ControlledSelect from "./controlled-select";
+import { useEffect, useState } from "react";
 
 const schema = yup
   .object({
@@ -28,37 +35,47 @@ const schema = yup
 
 type FormData = yup.InferType<typeof schema>;
 
-const FormAddBook = () => {
+const FormAddBook = ({ onBookAdded }) => {
   const {
     handleSubmit,
+    formState,
     formState: { errors, isSubmitting },
     control,
+    reset,
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
+  const [successMessage, setSuccessMessage] = useState("");
 
   const onSubmit = async (data: FormData) => {
     try {
       const response = await fetch("/api/books", {
-        // Reemplaza '/api/books' con la URL de tu endpoint de la API
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data), // Convierte los datos del formulario a una cadena JSON
+        body: JSON.stringify(data),
       });
 
       if (!response.ok) {
         throw new Error("Error al enviar el formulario");
       }
-
       const result = await response.json(); // Obtiene la respuesta de tu API
-
       console.log(result); // Haz algo con la respuesta (por ejemplo, mostrar un mensaje de éxito)
+      setSuccessMessage("¡Formulario enviado con éxito!");
+      onBookAdded();
+      setTimeout(() => {
+        setSuccessMessage("");
+      }, "1000");
     } catch (error) {
       console.error(error);
     }
   };
+  useEffect(() => {
+    if (formState.isSubmitSuccessful) {
+      reset();
+    }
+  }, [formState, reset]);
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
@@ -184,20 +201,24 @@ const FormAddBook = () => {
           size="medium"
         />
         <Box>
-          <Button
-            type="submit"
-            disabled={isSubmitting}
-            sx={{
-              "@media only screen and (max-width: 768px)": {
-                marginTop: "10px",
-              },
-              "@media only screen and (min-width: 768px)": {
-                marginTop: "0px",
-              },
-            }}
-          >
-            Agregar libro
-          </Button>
+          {successMessage ? (
+            <Typography>Libro añadido con exito</Typography>
+          ) : (
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              sx={{
+                "@media only screen and (max-width: 768px)": {
+                  marginTop: "10px",
+                },
+                "@media only screen and (min-width: 768px)": {
+                  marginTop: "0px",
+                },
+              }}
+            >
+              Añadir libro
+            </Button>
+          )}
         </Box>
       </Box>
     </form>
