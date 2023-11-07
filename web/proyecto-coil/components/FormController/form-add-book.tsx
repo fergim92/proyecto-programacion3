@@ -35,7 +35,8 @@ const schema = yup
 
 type FormData = yup.InferType<typeof schema>;
 
-const FormAddBook = ({ onBookAdded }) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const FormAddBook = ({ onBookAdded }: any) => {
   const {
     handleSubmit,
     formState,
@@ -66,7 +67,7 @@ const FormAddBook = ({ onBookAdded }) => {
       onBookAdded();
       setTimeout(() => {
         setSuccessMessage("");
-      }, "1000");
+      }, 1000);
     } catch (error) {
       console.error(error);
     }
