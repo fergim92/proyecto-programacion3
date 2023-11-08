@@ -20,6 +20,7 @@ import CancelTwoToneIcon from "@mui/icons-material/CancelTwoTone";
 import Swal from "sweetalert2";
 import "./page.css";
 import useSWR from "swr";
+import { useEffect, useState } from "react";
 
 interface BookType {
   ISBN: string;
@@ -31,17 +32,13 @@ interface BookType {
   titulo: string;
 }
 
-const Toast = Swal.mixin({
-  toast: true,
-  position: "bottom-end",
-  showConfirmButton: false,
-  timer: 3000,
-  timerProgressBar: true,
-  didOpen: (toast) => {
-    toast.onmouseenter = Swal.stopTimer;
-    toast.onmouseleave = Swal.resumeTimer;
-  },
-});
+function getWindowDimensions() {
+  const { innerWidth: width, innerHeight: height } = window;
+  return {
+    width,
+    height,
+  };
+}
 
 const Books = () => {
   const {
@@ -53,7 +50,30 @@ const Books = () => {
     fetch(...args).then((res) => res.json())
   );
   const theme = useTheme();
+  const [windowDimensions, setWindowDimensions] = useState(
+    typeof window !== "undefined"
+      ? getWindowDimensions()
+      : { width: 0, height: 0 }
+  );
+  useEffect(() => {
+    function handleResize() {
+      setWindowDimensions(getWindowDimensions());
+    }
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: windowDimensions.width > 900 ? "bottom-end" : "bottom",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.onmouseenter = Swal.stopTimer;
+      toast.onmouseleave = Swal.resumeTimer;
+    },
+  });
   const addBook = async (newBook: BookType) => {
     const oldData = data;
     const newData = [...data, newBook];
