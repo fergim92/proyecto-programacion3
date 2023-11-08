@@ -11,12 +11,15 @@ import {
   AccordionDetails,
   AccordionSummary,
 } from "@mui/material";
-import { useEffect, useState } from "react";
 import { useTheme } from "@mui/material/styles";
 import Loader from "@/components/Loader/loader";
 import Link from "next/link";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import FormAddBook from "@/components/FormController/form-add-book";
+import CancelTwoToneIcon from "@mui/icons-material/CancelTwoTone";
+import Swal from "sweetalert2";
+import "./page.css";
+import useSWR from "swr";
 
 interface BookType {
   ISBN: string;
@@ -28,35 +31,106 @@ interface BookType {
   titulo: string;
 }
 
-const Books = () => {
-  const [data, setData] = useState<BookType[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const theme = useTheme();
-  const [refreshData, setRefreshData] = useState(false);
+const Toast = Swal.mixin({
+  toast: true,
+  position: "bottom-end",
+  showConfirmButton: false,
+  timer: 3000,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.onmouseenter = Swal.stopTimer;
+    toast.onmouseleave = Swal.resumeTimer;
+  },
+});
 
-  const fetchData = async () => {
-    setLoading(true);
-    const res = await fetch("/api/books", { cache: "no-store" });
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
+const Books = () => {
+  const {
+    data,
+    error,
+    isLoading,
+    mutate: mutateList,
+  } = useSWR("/api/books", (...args) =>
+    fetch(...args).then((res) => res.json())
+  );
+  const theme = useTheme();
+
+  const addBook = async (newBook: BookType) => {
+    const oldData = data;
+    const newData = [...data, newBook];
+    await mutateList(newData, false);
+    try {
+      const response = await fetch("/api/books", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newBook),
+      });
+      if (!response.ok) {
+        Toast.fire({
+          icon: "error",
+          iconColor: "red",
+          title: "Error al agregar el libro",
+          background: theme.palette.background.paper,
+          color: theme.palette.text.primary,
+        });
+        await mutateList(oldData, false);
+        throw new Error("Error al enviar el formulario");
+      }
+    } catch (error) {
+      console.error(error);
     }
-    const books = await res.json();
-    setData(books);
-    setLoading(false);
   };
 
-  useEffect(() => {
-    fetchData();
-    console.log("Me actualice");
-  }, [refreshData]);
+  const deleteBook = async (deletedBookISBN: string) => {
+    const oldData = data;
+    const newData = data.filter(
+      (book: BookType) => book.ISBN !== deletedBookISBN
+    );
+    await mutateList(newData, false);
 
-  if (loading) {
-    return <Loader />;
-  }
+    try {
+      const response = await fetch(`/api/books/${deletedBookISBN}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok) {
+        await mutateList(oldData, false);
+        Toast.fire({
+          icon: "error",
+          iconColor: "red",
+          title: "Error al borrar el libro",
+          background: theme.palette.background.paper,
+          color: theme.palette.text.primary,
+        });
+        throw new Error("Error al enviar el formulario");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  if (error) return <div>Error al cargar los datos</div>;
+  if (isLoading) return <Loader />;
 
   return (
-    <main style={{ height: "auto", display: "flex", flexDirection: "column" }}>
-      <Accordion sx={{ width: "100%" }}>
+    <main
+      style={{
+        height: "auto",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "start",
+      }}
+    >
+      <Accordion
+        sx={{
+          width: "100%",
+          marginBottom: "10px",
+          boxShadow: "0px 3px 10px rgba(0,0,0,0.2)",
+        }}
+      >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
@@ -65,11 +139,12 @@ const Books = () => {
           <Typography>Agregar libro</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <FormAddBook onBookAdded={() => setRefreshData(true)} />
+          <FormAddBook onBookAdded={(bookAdded) => addBook(bookAdded)} />
         </AccordionDetails>
       </Accordion>
       <Box
         sx={{
+          width: "100%",
           display: "flex",
           flexWrap: "wrap",
           justifyContent: "space-evenly",
@@ -80,6 +155,7 @@ const Books = () => {
             raised
             sx={{
               width: "100%",
+              position: "relative",
               "@media (min-width: 900px)": {
                 maxWidth: "200px",
               },
@@ -109,6 +185,52 @@ const Books = () => {
               title={book.titulo}
               alt={book.titulo}
             />
+            <CancelTwoToneIcon
+              sx={{
+                position: "absolute",
+                right: "10px",
+                top: "10px",
+                fontSize: "30px",
+                cursor: "pointer",
+                color: "red",
+                backgroundColor: theme.palette.background.paper,
+                borderRadius: "50%",
+              }}
+              onClick={() => {
+                Swal.fire({
+                  customClass: {
+                    title: "titulo_alert",
+                  },
+                  title: `Estas seguro de eliminar "${book.titulo}"?`,
+                  icon: "warning",
+                  showCancelButton: true,
+                  iconColor: "red",
+                  background: theme.palette.background.paper,
+                  color: theme.palette.text.primary,
+                  confirmButtonColor: "red",
+                  confirmButtonText: "Si, deseo eliminarlo!",
+                  cancelButtonColor: theme.palette.background.paper,
+                  cancelButtonText: `<span style="color: ${theme.palette.text.primary}">Cancelar</span>`,
+                }).then((result) => {
+                  if (result.isConfirmed) {
+                    deleteBook(book.ISBN);
+                    Swal.fire({
+                      customClass: {
+                        title: "titulo_alert",
+                      },
+                      title: "Eliminado!",
+                      icon: "success",
+                      iconColor: theme.palette.primary.main,
+                      background: theme.palette.background.paper,
+                      color: theme.palette.text.primary,
+                      confirmButtonText: `<span style="color: ${theme.palette.text.primary}">Volver</span>`,
+                      confirmButtonColor: theme.palette.background.paper,
+                    });
+                  }
+                });
+              }}
+            />
+
             <CardContent
               sx={{
                 display: "flex",

@@ -34,9 +34,23 @@ const schema = yup
   .required();
 
 type FormData = yup.InferType<typeof schema>;
+interface BookType {
+  ISBN: string;
+  anio_de_publicacion: number;
+  cantidad_disponible: number;
+  id_editorial: number;
+  id_idioma: number;
+  imagen_url: string;
+  titulo: string;
+}
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const FormAddBook = ({ onBookAdded }: any) => {
+type OnBookAdded = (newBook: BookType) => void;
+
+interface FormAddBookProps {
+  onBookAdded: OnBookAdded;
+}
+
+const FormAddBook = ({ onBookAdded }: FormAddBookProps) => {
   const {
     handleSubmit,
     formState,
@@ -49,29 +63,13 @@ const FormAddBook = ({ onBookAdded }: any) => {
   const [successMessage, setSuccessMessage] = useState("");
 
   const onSubmit = async (data: FormData) => {
-    try {
-      const response = await fetch("/api/books", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        throw new Error("Error al enviar el formulario");
-      }
-      const result = await response.json(); // Obtiene la respuesta de tu API
-      console.log(result); // Haz algo con la respuesta (por ejemplo, mostrar un mensaje de éxito)
-      setSuccessMessage("¡Formulario enviado con éxito!");
-      onBookAdded();
-      setTimeout(() => {
-        setSuccessMessage("");
-      }, 1000);
-    } catch (error) {
-      console.error(error);
-    }
+    onBookAdded(data);
+    setSuccessMessage("¡Formulario enviado con éxito!");
+    setTimeout(() => {
+      setSuccessMessage("");
+    }, 2000);
   };
+
   useEffect(() => {
     if (formState.isSubmitSuccessful) {
       reset();
@@ -203,7 +201,18 @@ const FormAddBook = ({ onBookAdded }: any) => {
         />
         <Box>
           {successMessage ? (
-            <Typography>Libro añadido con exito</Typography>
+            <Typography
+              sx={{
+                "@media only screen and (max-width: 768px)": {
+                  marginTop: "10px",
+                },
+                "@media only screen and (min-width: 768px)": {
+                  marginTop: "0px",
+                },
+              }}
+            >
+              Libro añadido con exito
+            </Typography>
           ) : (
             <Button
               type="submit"
