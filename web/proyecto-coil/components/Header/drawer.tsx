@@ -12,7 +12,7 @@ import { useTheme } from "@mui/material/styles";
 import { alpha } from "@mui/material";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
-import { ColorModeContext } from "@/context/ColorModeContext";
+import { ColorModeContext } from "@/context/color-mode-context";
 
 type Anchor = "top" | "left" | "bottom" | "right";
 

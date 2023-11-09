@@ -10,7 +10,7 @@ import DrawerButton from "./drawer";
 import { usePathname } from "next/navigation";
 import { useTheme } from "@mui/material/styles";
 import React from "react";
-import { ColorModeContext } from "@/context/ColorModeContext";
+import { ColorModeContext } from "@/context/color-mode-context";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import { alpha } from "@mui/material";

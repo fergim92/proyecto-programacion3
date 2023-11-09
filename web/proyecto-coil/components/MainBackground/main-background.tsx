@@ -1,5 +1,5 @@
 "use client";
-import styles from "./mainBackground.module.css";
+import styles from "./main-background.module.css";
 import { useTheme } from "@mui/material/styles";
 import React from "react";
 

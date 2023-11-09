@@ -10,6 +10,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Modal,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import Loader from "@/components/Loader/loader";
@@ -20,27 +21,28 @@ import CancelTwoToneIcon from "@mui/icons-material/CancelTwoTone";
 import Swal from "sweetalert2";
 import "./page.css";
 import useSWR from "swr";
-import { useEffect, useState } from "react";
-
-interface BookType {
-  ISBN: string;
-  anio_de_publicacion: number;
-  cantidad_disponible: number;
-  id_editorial: number;
-  id_idioma: number;
-  imagen_url: string;
-  titulo: string;
-}
-
-function getWindowDimensions() {
-  const { innerWidth: width, innerHeight: height } = window;
-  return {
-    width,
-    height,
-  };
-}
+import { useState } from "react";
+import { BookType } from "@/types/types";
+import EditCardButton from "@/components/Buttons/edit-card-button";
+import FormUpdateBook from "@/components/FormController/form-update-book";
+import Toast from "@/components/Toast/toast";
 
 const Books = () => {
+  const theme = useTheme();
+  const toast = Toast();
+  const [onEdit, setOnEdit] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [modalData, setModalData] = useState({
+    ISBN: "",
+    anio_de_publicacion: 1,
+    cantidad_disponible: 1,
+    id_editorial: 1,
+    id_idioma: 1,
+    imagen_url: "",
+    titulo: "",
+  });
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
   const {
     data,
     error,
@@ -49,36 +51,16 @@ const Books = () => {
   } = useSWR("/api/books", (...args) =>
     fetch(...args).then((res) => res.json())
   );
-  const theme = useTheme();
-  const [windowDimensions, setWindowDimensions] = useState(
-    typeof window !== "undefined"
-      ? getWindowDimensions()
-      : { width: 0, height: 0 }
+  const { data: dataBook, mutate: mutateBook } = useSWR(
+    `/api/books/${modalData.ISBN}`,
+    (...args) => fetch(...args).then((res) => res.json())
   );
-  useEffect(() => {
-    function handleResize() {
-      setWindowDimensions(getWindowDimensions());
-    }
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
-  const Toast = Swal.mixin({
-    toast: true,
-    position: windowDimensions.width > 900 ? "bottom-end" : "bottom",
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-    didOpen: (toast) => {
-      toast.onmouseenter = Swal.stopTimer;
-      toast.onmouseleave = Swal.resumeTimer;
-    },
-  });
   const addBook = async (newBook: BookType) => {
     const oldData = data;
     const newData = [...data, newBook];
     await mutateList(newData, false);
-    Toast.fire({
+    toast.fire({
       icon: "success",
       iconColor: "green",
       title: "Libro agregado",
@@ -94,7 +76,7 @@ const Books = () => {
         body: JSON.stringify(newBook),
       });
       if (!response.ok) {
-        Toast.fire({
+        toast.fire({
           icon: "error",
           iconColor: "red",
           title: "Error al agregar el libro",
@@ -108,14 +90,13 @@ const Books = () => {
       console.error(error);
     }
   };
-
   const deleteBook = async (deletedBookISBN: string) => {
     const oldData = data;
     const newData = data.filter(
       (book: BookType) => book.ISBN !== deletedBookISBN
     );
     await mutateList(newData, false);
-    Toast.fire({
+    toast.fire({
       icon: "success",
       iconColor: "green",
       title: "Libro eliminado",
@@ -131,7 +112,7 @@ const Books = () => {
       });
       if (!response.ok) {
         await mutateList(oldData, false);
-        Toast.fire({
+        toast.fire({
           icon: "error",
           iconColor: "red",
           title: "Error al borrar el libro",
@@ -144,9 +125,47 @@ const Books = () => {
       console.error(error);
     }
   };
+  const updateBook = async (updatedBook: BookType) => {
+    const oldData = dataBook;
+    const updatedBooks = data.map((book: BookType) =>
+      book.ISBN === updatedBook.ISBN ? updatedBook : book
+    );
+    await mutateBook(updatedBook, false);
+    await mutateList(updatedBooks, false);
+    toast.fire({
+      icon: "success",
+      iconColor: "green",
+      title: "Libro modificado",
+      background: theme.palette.background.paper,
+      color: theme.palette.text.primary,
+    });
+    try {
+      const response = await fetch(`/api/books/${updatedBook.ISBN}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedBook),
+      });
+      if (!response.ok) {
+        toast.fire({
+          icon: "error",
+          iconColor: "red",
+          title: "Error al modificar el libro",
+          background: theme.palette.background.paper,
+          color: theme.palette.text.primary,
+        });
+        await mutateBook(oldData, false);
+        await mutateList(data, false);
+        throw new Error("Error al enviar el formulario");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  if (error) return <div>Error al cargar los datos</div>;
   if (isLoading) return <Loader />;
+  if (error) return <Typography>Error al cargar los datos</Typography>;
 
   return (
     <main
@@ -203,6 +222,20 @@ const Books = () => {
             }}
             key={book.ISBN}
           >
+            <Box
+              onClick={() => {
+                setModalData(book);
+                handleOpen();
+              }}
+            >
+              <EditCardButton
+                onEdit={onEdit}
+                setOnEdit={setOnEdit}
+                modalClose={open}
+                setModalClose={handleClose}
+              />
+            </Box>
+
             <CardMedia
               component="img"
               sx={{
@@ -295,6 +328,43 @@ const Books = () => {
             </CardActions>
           </Card>
         ))}
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            border: "none",
+          }}
+        >
+          <Box
+            sx={{
+              width: "80%",
+              backgroundColor: theme.palette.background.paper,
+
+              "@media (max-width: 900px)": {
+                padding: "30px 10px 10px",
+              },
+              "@media (min-width: 900px)": {
+                padding: "30px 30px 10px",
+              },
+            }}
+          >
+            <Typography sx={{ textAlign: "center", fontSize: "20px" }}>
+              Edición de libro
+            </Typography>
+            <FormUpdateBook
+              onBookUpdated={(bookUpdated) => updateBook(bookUpdated)}
+              bookInfo={modalData}
+              cancelUpdate={handleClose}
+              view="library"
+            />
+          </Box>
+        </Modal>
       </Box>
     </main>
   );

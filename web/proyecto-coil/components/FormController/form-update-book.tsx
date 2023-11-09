@@ -4,47 +4,11 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import ControlledSelect from "./controlled-select";
-import { useEffect, useState } from "react";
-
-const schema = yup
-  .object({
-    ISBN: yup.string().required("El ISBN es requerido."),
-    anio_de_publicacion: yup
-      .number()
-      .typeError("El año de publicación debe ser un número.")
-      .required("El año de publicación es requerido.")
-      .max(new Date().getFullYear(), "El año no puede ser en el futuro."),
-    cantidad_disponible: yup
-      .number()
-      .typeError("La cantidad disponible debe ser un número.")
-      .required("La cantidad disponible es requerida.")
-      .min(0, "La cantidad disponible no puede ser negativa."),
-    id_editorial: yup
-      .number()
-      .typeError("El ID de la editorial debe ser un número.")
-      .required("El ID de la editorial es requerido."),
-    id_idioma: yup
-      .number()
-      .typeError("El ID del idioma debe ser un número.")
-      .required("El ID del idioma es requerido."),
-    imagen_url: yup
-      .string()
-      .url("La URL de la imagen debe ser válida.")
-      .required("La URL de la imagen es requerida."),
-    titulo: yup.string().required("El título es requerido."),
-  })
-  .required();
+import { useEffect } from "react";
+import { BookType } from "@/types/types";
+import { schema } from "@/schemas/schemas";
 
 type FormData = yup.InferType<typeof schema>;
-interface BookType {
-  ISBN: string;
-  anio_de_publicacion: number;
-  cantidad_disponible: number;
-  id_editorial: number;
-  id_idioma: number;
-  imagen_url: string;
-  titulo: string;
-}
 
 type OnBookUpdated = (updatedBook: BookType) => void;
 type OnCancelUpdated = () => void;
@@ -53,19 +17,14 @@ interface FormUpdateBookProps {
   onBookUpdated: OnBookUpdated;
   bookInfo: BookType;
   cancelUpdate: OnCancelUpdated;
-}
-function getWindowDimensions() {
-  const { innerWidth: width, innerHeight: height } = window;
-  return {
-    width,
-    height,
-  };
+  view: "library" | "detail";
 }
 
 const FormUpdateBook = ({
   onBookUpdated,
   bookInfo,
   cancelUpdate,
+  view,
 }: FormUpdateBookProps) => {
   const {
     handleSubmit,
@@ -76,19 +35,6 @@ const FormUpdateBook = ({
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
-  const [windowDimensions, setWindowDimensions] = useState(
-    typeof window !== "undefined"
-      ? getWindowDimensions()
-      : { width: 0, height: 0 }
-  );
-
-  useEffect(() => {
-    function handleResize() {
-      setWindowDimensions(getWindowDimensions());
-    }
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   const onSubmit = async (data: FormData) => {
     onBookUpdated(data);
@@ -112,6 +58,7 @@ const FormUpdateBook = ({
           display: "flex",
           flexDirection: "column",
           width: "100%",
+          gap: view == "library" ? "15px" : "0px",
           "@media (max-width: 900px)": {
             gap: "12px",
           },
@@ -126,7 +73,7 @@ const FormUpdateBook = ({
           variant="standard"
           size="small"
           defaultValue={bookInfo.titulo}
-          errorType={windowDimensions.width > 900 ? "toolTip" : "normal"}
+          errorType={view == "detail" ? "toolTip" : "normal"}
           sx={{
             "& .MuiInputLabel-shrink": {
               transform: "translate(0, 2px) scale(0.75); !important",
@@ -141,8 +88,11 @@ const FormUpdateBook = ({
           errorMessage={errors["ISBN"]?.message}
           variant="standard"
           size="small"
+          InputProps={{
+            readOnly: true,
+          }}
           defaultValue={bookInfo.ISBN}
-          errorType={windowDimensions.width > 900 ? "toolTip" : "normal"}
+          errorType={view == "detail" ? "toolTip" : "normal"}
           sx={{
             "& .MuiInputLabel-shrink": {
               transform: "translate(0, 2px) scale(0.75); !important",
@@ -158,7 +108,7 @@ const FormUpdateBook = ({
           variant="standard"
           size="small"
           defaultValue={bookInfo.anio_de_publicacion}
-          errorType={windowDimensions.width > 900 ? "toolTip" : "normal"}
+          errorType={view == "detail" ? "toolTip" : "normal"}
           sx={{
             "& .MuiInputLabel-shrink": {
               transform: "translate(0, 2px) scale(0.75); !important",
@@ -174,7 +124,7 @@ const FormUpdateBook = ({
           variant="standard"
           size="small"
           defaultValue={bookInfo.cantidad_disponible}
-          errorType={windowDimensions.width > 900 ? "toolTip" : "normal"}
+          errorType={view == "detail" ? "toolTip" : "normal"}
           sx={{
             "& .MuiInputLabel-shrink": {
               transform: "translate(0, 2px) scale(0.75); !important",
@@ -190,7 +140,7 @@ const FormUpdateBook = ({
           variant="standard"
           size="small"
           defaultValue={bookInfo.id_editorial}
-          errorType={windowDimensions.width > 900 ? "toolTip" : "normal"}
+          errorType={view == "detail" ? "toolTip" : "normal"}
           sx={{
             "& .MuiInputLabel-shrink": {
               transform: "translate(0, 2px) scale(0.75); !important",
@@ -200,6 +150,9 @@ const FormUpdateBook = ({
         <FormControl fullWidth sx={{ height: "100%" }}>
           <InputLabel
             sx={{
+              "& .MuiFormLabel-root": {
+                transform: "translate(0, 2px) scale(0.75); !important",
+              },
               "&.MuiInputLabel-shrink": {
                 transform: "translate(0, 2px) scale(0.75); !important",
               },
@@ -217,7 +170,7 @@ const FormUpdateBook = ({
             variant="standard"
             defaultValue={bookInfo.id_idioma}
             size="small"
-            errorType={windowDimensions.width > 900 ? "toolTip" : "normal"}
+            errorType={view == "detail" ? "toolTip" : "normal"}
             sx={{
               "& .MuiInput-input": { paddingTop: "17px !important" },
               "& .MuiInputLabel-shrink": {
@@ -235,7 +188,7 @@ const FormUpdateBook = ({
           variant="standard"
           size="small"
           defaultValue={bookInfo.imagen_url}
-          errorType={windowDimensions.width > 900 ? "toolTip" : "normal"}
+          errorType={view == "detail" ? "toolTip" : "normal"}
           sx={{
             "& .MuiInputLabel-shrink": {
               transform: "translate(0, 2px) scale(0.75); !important",

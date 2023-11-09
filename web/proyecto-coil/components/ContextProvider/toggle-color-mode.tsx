@@ -3,7 +3,7 @@
 import * as React from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { ColorModeContext } from "../../context/ColorModeContext";
+import { ColorModeContext } from "../../context/color-mode-context";
 import useMediaQuery from "@mui/material/useMediaQuery";
 type Props = {
   children?: React.ReactNode;

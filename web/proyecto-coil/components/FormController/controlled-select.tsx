@@ -85,7 +85,7 @@ const ControlledSelect = <T extends FieldValues = FieldValues>({
                       fontSize: "10px",
                     },
                     "@media only screen and (min-width: 900px)": {
-                      fontSize: "15px",
+                      fontSize: "12px",
                     },
                   }}
                 >

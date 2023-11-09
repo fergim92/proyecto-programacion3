@@ -5,38 +5,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import ControlledSelect from "./controlled-select";
 import { useEffect } from "react";
-
-const schema = yup
-  .object({
-    ISBN: yup.string().required("El ISBN es requerido."),
-    anio_de_publicacion: yup
-      .number()
-      .required("El año de publicación es requerido.")
-      .max(new Date().getFullYear(), "El año no puede ser en el futuro."),
-    cantidad_disponible: yup
-      .number()
-      .required("La cantidad disponible es requerida.")
-      .min(0, "La cantidad disponible no puede ser negativa."),
-    id_editorial: yup.number().required("El ID de la editorial es requerido."),
-    id_idioma: yup.number().required("El ID del idioma es requerido."),
-    imagen_url: yup
-      .string()
-      .url("La URL de la imagen debe ser válida.")
-      .required("La URL de la imagen es requerida."),
-    titulo: yup.string().required("El título es requerido."),
-  })
-  .required();
+import { BookType } from "@/types/types";
+import { schema } from "@/schemas/schemas";
 
 type FormData = yup.InferType<typeof schema>;
-interface BookType {
-  ISBN: string;
-  anio_de_publicacion: number;
-  cantidad_disponible: number;
-  id_editorial: number;
-  id_idioma: number;
-  imagen_url: string;
-  titulo: string;
-}
 
 type OnBookAdded = (newBook: BookType) => void;
 

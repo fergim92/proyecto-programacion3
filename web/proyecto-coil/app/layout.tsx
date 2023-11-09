@@ -4,7 +4,7 @@ import { Suspense } from "react";
 import Loading from "./loading";
 import Header from "@/components/Header/header";
 import Footer from "@/components/Footer/footer";
-import ThemeContext from "../components/ToggleTheme/toggleColorMode";
+import ThemeContext from "../components/ContextProvider/toggle-color-mode";
 
 export const metadata: Metadata = {
   title: "Proyecto COIL",

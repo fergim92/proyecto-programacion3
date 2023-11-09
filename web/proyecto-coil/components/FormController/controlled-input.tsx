@@ -25,6 +25,7 @@ interface InputType<T extends FieldValues = FieldValues> {
   size?: "small" | "medium";
   id?: string | number;
   value?: string;
+  InputProps?: object;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onFocusCapture?: ({ target }: any) => void;
   sx?: object;
@@ -41,6 +42,7 @@ const ControlledInput = <T extends FieldValues = FieldValues>({
   variant,
   size,
   sx,
+  InputProps,
 }: InputType<T>) => {
   if (errorType == "normal") {
     return (
@@ -66,6 +68,7 @@ const ControlledInput = <T extends FieldValues = FieldValues>({
                 onChange={onChange}
                 size={size}
                 sx={sx}
+                InputProps={InputProps}
                 fullWidth
               />
               {errorMessage && (
@@ -81,7 +84,7 @@ const ControlledInput = <T extends FieldValues = FieldValues>({
                       fontSize: "10px",
                     },
                     "@media only screen and (min-width: 900px)": {
-                      fontSize: "15px",
+                      fontSize: "12px",
                     },
                   }}
                 >
@@ -130,6 +133,7 @@ const ControlledInput = <T extends FieldValues = FieldValues>({
                 onChange={onChange}
                 size={size}
                 sx={sx}
+                InputProps={InputProps}
                 fullWidth
               />
             </Tooltip>
