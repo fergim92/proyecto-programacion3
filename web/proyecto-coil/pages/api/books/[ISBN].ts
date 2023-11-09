@@ -1,14 +1,25 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { BigQuery } from "@google-cloud/bigquery";
 
-const bigQueryClient = new BigQuery({
-  projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
-  keyFilename: process.env.PATH_TO_BIGQUERY_KEYFILE,
-});
+let bigQueryClient: BigQuery;
+
+if (process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64) {
+  // Decodificar la variable de entorno que contiene tus credenciales en Base64
+  const credentialsBase64 = process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64;
+  const credentialsJson = Buffer.from(credentialsBase64, "base64").toString("utf8");
+
+  bigQueryClient = new BigQuery({
+    projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
+    credentials: JSON.parse(credentialsJson),
+  });
+} else {
+  console.error("No se encontraron las credenciales de Google Cloud.");
+}
 
 const datasetId = process.env.BIGQUERY_DATASET_ID;
 const tableLibros = process.env.BIGQUERY_TABLE_LIBROS;
 const fullTableName = `${datasetId}.${tableLibros}`;
+
 
 export default async function handler(
   req: NextApiRequest,
