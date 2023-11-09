@@ -58,7 +58,7 @@ async function handleGet(ISBN: string, res: NextApiResponse) {
     }
   } catch (error) {
     console.error("Error al obtener libro:", error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ message: "Error del servidor" });
   }
 }
 
@@ -107,7 +107,7 @@ async function handlePut(
     res.status(200).json({ message: "Libro actualizado con éxito" });
   } catch (error) {
     console.error("Error al actualizar el libro:", error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ message: "Error del servidor" });
   }
 }
 
@@ -123,6 +123,6 @@ async function handleDelete(ISBN: string, res: NextApiResponse) {
     res.status(200).json({ message: "Libro eliminado con éxito" });
   } catch (error) {
     console.error("Error al eliminar libro:", error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ message: "Error del servidor" });
   }
 }

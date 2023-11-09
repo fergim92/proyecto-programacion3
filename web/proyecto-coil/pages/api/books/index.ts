@@ -6,7 +6,9 @@ let bigQueryClient: BigQuery;
 if (process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64) {
   // Decodificar la variable de entorno que contiene tus credenciales en Base64
   const credentialsBase64 = process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64;
-  const credentialsJson = Buffer.from(credentialsBase64, "base64").toString("utf8");
+  const credentialsJson = Buffer.from(credentialsBase64, "base64").toString(
+    "utf8"
+  );
 
   bigQueryClient = new BigQuery({
     projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
@@ -19,7 +21,6 @@ if (process.env.GOOGLE_APPLICATION_CREDENTIALS_BASE64) {
 const datasetId = process.env.BIGQUERY_DATASET_ID;
 const tableLibros = process.env.BIGQUERY_TABLE_LIBROS;
 const fullTableName = `${datasetId}.${tableLibros}`;
-
 
 export default async function handler(
   req: NextApiRequest,
@@ -46,7 +47,7 @@ async function handleGet(req: NextApiRequest, res: NextApiResponse) {
     res.status(200).json(rows);
   } catch (error) {
     console.error("Error al obtener libros:", error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ message: "Error del servidor" });
   }
 }
 
@@ -61,13 +62,37 @@ async function handlePost(req: NextApiRequest, res: NextApiResponse) {
     imagen_url,
   } = req.body;
 
-  const query = `
+  // Primero, verifica si el ISBN ya existe en la base de datos
+  const checkQuery = `
+    SELECT *
+    FROM ${fullTableName}
+    WHERE ISBN = @ISBN
+  `;
+
+  const checkOptions = {
+    query: checkQuery,
+    location: "US", // Cambia según tu configuración en BigQuery
+    params: {
+      ISBN,
+    },
+  };
+
+  const [rows] = await bigQueryClient.query(checkOptions);
+
+  // Si el ISBN ya existe, devuelve un error
+  if (rows.length > 0) {
+    res.status(400).json({ message: "El ISBN ya existe" });
+    return;
+  }
+
+  // Si el ISBN no existe, inserta el nuevo libro
+  const insertQuery = `
     INSERT INTO ${fullTableName} (ISBN, titulo, cantidad_disponible, anio_de_publicacion, id_idioma, id_editorial, imagen_url)
     VALUES (@ISBN, @titulo, @cantidad_disponible, @anio_de_publicacion, @id_idioma, @id_editorial, @imagen_url)
   `;
 
-  const options = {
-    query: query,
+  const insertOptions = {
+    query: insertQuery,
     location: "US", // Cambia según tu configuración en BigQuery
     params: {
       ISBN,
@@ -81,10 +106,10 @@ async function handlePost(req: NextApiRequest, res: NextApiResponse) {
   };
 
   try {
-    await bigQueryClient.query(options);
-    res.status(200).json({ message: "Libro insertado con éxito" });
+    await bigQueryClient.query(insertOptions);
+    res.status(200).json({ message: "Libro creado con éxito" });
   } catch (error) {
     console.error("Error al insertar el libro:", error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ message: "Error del servidor" });
   }
 }
