@@ -6,7 +6,7 @@ export default async function handler(
 ) {
   const { method, body } = req;
 
-  const url = "https://imagenv9-i33jpf2c6a-uc.a.run.app/libros";
+  const url = "https://imagenv33-i33jpf2c6a-uc.a.run.app/libros";
 
   if (method === "POST") {
     const response = await fetch(url, {

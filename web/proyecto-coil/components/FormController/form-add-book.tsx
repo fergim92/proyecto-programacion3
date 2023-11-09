@@ -1,16 +1,10 @@
-import {
-  Box,
-  Button,
-  FormControl,
-  InputLabel,
-  Typography,
-} from "@mui/material";
+import { Box, Button, FormControl, InputLabel } from "@mui/material";
 import ControlledInput from "./controlled-input";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import ControlledSelect from "./controlled-select";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const schema = yup
   .object({
@@ -60,14 +54,9 @@ const FormAddBook = ({ onBookAdded }: FormAddBookProps) => {
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
-  const [successMessage, setSuccessMessage] = useState("");
 
   const onSubmit = async (data: FormData) => {
     onBookAdded(data);
-    setSuccessMessage("¡Formulario enviado con éxito!");
-    setTimeout(() => {
-      setSuccessMessage("");
-    }, 2000);
   };
 
   useEffect(() => {
@@ -116,6 +105,7 @@ const FormAddBook = ({ onBookAdded }: FormAddBookProps) => {
             errorMessage={errors["titulo"]?.message}
             variant="filled"
             size="medium"
+            errorType="normal"
           />
           <ControlledInput
             name="ISBN"
@@ -125,6 +115,7 @@ const FormAddBook = ({ onBookAdded }: FormAddBookProps) => {
             errorMessage={errors["ISBN"]?.message}
             variant="filled"
             size="medium"
+            errorType="normal"
           />
           <ControlledInput
             name="anio_de_publicacion"
@@ -134,6 +125,7 @@ const FormAddBook = ({ onBookAdded }: FormAddBookProps) => {
             errorMessage={errors["anio_de_publicacion"]?.message}
             variant="filled"
             size="medium"
+            errorType="normal"
           />
         </Box>
         <Box
@@ -158,6 +150,7 @@ const FormAddBook = ({ onBookAdded }: FormAddBookProps) => {
             errorMessage={errors["cantidad_disponible"]?.message}
             variant="filled"
             size="medium"
+            errorType="normal"
           />
           <ControlledInput
             name="id_editorial"
@@ -167,6 +160,7 @@ const FormAddBook = ({ onBookAdded }: FormAddBookProps) => {
             errorMessage={errors["id_editorial"]?.message}
             variant="filled"
             size="medium"
+            errorType="normal"
           />
           <FormControl fullWidth>
             <InputLabel
@@ -176,7 +170,7 @@ const FormAddBook = ({ onBookAdded }: FormAddBookProps) => {
                 },
               }}
             >
-              Seleccionar idioma
+              Seleccionar idioma*
             </InputLabel>
             <ControlledSelect
               name="id_idioma"
@@ -185,8 +179,8 @@ const FormAddBook = ({ onBookAdded }: FormAddBookProps) => {
               labelId="select-label"
               items={["Ingles", "Español"]}
               errorMessage={errors["id_idioma"]?.message || ""}
-              defaultValue=""
               variant="filled"
+              errorType="normal"
             />
           </FormControl>
         </Box>
@@ -198,37 +192,23 @@ const FormAddBook = ({ onBookAdded }: FormAddBookProps) => {
           errorMessage={errors["imagen_url"]?.message}
           variant="filled"
           size="medium"
+          errorType="normal"
         />
         <Box>
-          {successMessage ? (
-            <Typography
-              sx={{
-                "@media only screen and (max-width: 768px)": {
-                  marginTop: "10px",
-                },
-                "@media only screen and (min-width: 768px)": {
-                  marginTop: "0px",
-                },
-              }}
-            >
-              Libro añadido con exito
-            </Typography>
-          ) : (
-            <Button
-              type="submit"
-              disabled={isSubmitting}
-              sx={{
-                "@media only screen and (max-width: 768px)": {
-                  marginTop: "10px",
-                },
-                "@media only screen and (min-width: 768px)": {
-                  marginTop: "0px",
-                },
-              }}
-            >
-              Añadir libro
-            </Button>
-          )}
+          <Button
+            type="submit"
+            disabled={isSubmitting}
+            sx={{
+              "@media only screen and (max-width: 768px)": {
+                marginTop: "10px",
+              },
+              "@media only screen and (min-width: 768px)": {
+                marginTop: "0px",
+              },
+            }}
+          >
+            Añadir libro
+          </Button>
         </Box>
       </Box>
     </form>

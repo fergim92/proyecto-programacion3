@@ -78,6 +78,13 @@ const Books = () => {
     const oldData = data;
     const newData = [...data, newBook];
     await mutateList(newData, false);
+    Toast.fire({
+      icon: "success",
+      iconColor: "green",
+      title: "Libro agregado",
+      background: theme.palette.background.paper,
+      color: theme.palette.text.primary,
+    });
     try {
       const response = await fetch("/api/books", {
         method: "POST",
@@ -108,7 +115,13 @@ const Books = () => {
       (book: BookType) => book.ISBN !== deletedBookISBN
     );
     await mutateList(newData, false);
-
+    Toast.fire({
+      icon: "success",
+      iconColor: "green",
+      title: "Libro eliminado",
+      background: theme.palette.background.paper,
+      color: theme.palette.text.primary,
+    });
     try {
       const response = await fetch(`/api/books/${deletedBookISBN}`, {
         method: "DELETE",
@@ -234,18 +247,6 @@ const Books = () => {
                 }).then((result) => {
                   if (result.isConfirmed) {
                     deleteBook(book.ISBN);
-                    Swal.fire({
-                      customClass: {
-                        title: "titulo_alert",
-                      },
-                      title: "Eliminado!",
-                      icon: "success",
-                      iconColor: theme.palette.primary.main,
-                      background: theme.palette.background.paper,
-                      color: theme.palette.text.primary,
-                      confirmButtonText: `<span style="color: ${theme.palette.text.primary}">Volver</span>`,
-                      confirmButtonColor: theme.palette.background.paper,
-                    });
                   }
                 });
               }}

@@ -8,7 +8,7 @@ export default async function handler(
     query: { ISBN },
   } = req;
 
-  const url = `https://imagenv9-i33jpf2c6a-uc.a.run.app/libros/${ISBN}`;
+  const url = `https://imagenv33-i33jpf2c6a-uc.a.run.app/libros/${ISBN}`;
 
   if (req.method === "GET") {
     const response = await fetch(url, {
